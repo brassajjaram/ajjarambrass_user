@@ -20,7 +20,12 @@
 
   <main class="checkout-page">
 
-    <header class="checkout-page-heading">
+    <!-- Checkout header -->
+
+    <header
+      class="checkout-page-heading"
+      id="checkoutPageHeading"
+    >
 
       <button
         class="checkout-back-button"
@@ -58,7 +63,7 @@
       hidden
     >
 
-      <!-- Delivery and payment card -->
+      <!-- Delivery and payment -->
 
       <section class="checkout-card">
 
@@ -72,11 +77,9 @@
             </p>
           </div>
 
-          
-
         </div>
 
-        <!-- Saved address card -->
+        <!-- Saved address -->
 
         <div
           class="saved-address-card"
@@ -115,10 +118,12 @@
 
           <p class="saved-phone-text">
             Phone:
+
             <strong id="savedCustomerPhone"></strong>
           </p>
 
           <div class="selected-address-row">
+
             <span class="selected-address-check">
               ✓
             </span>
@@ -126,6 +131,7 @@
             <span>
               Delivering to this address
             </span>
+
           </div>
 
         </div>
@@ -142,6 +148,7 @@
             <div class="checkout-form-grid">
 
               <label class="checkout-field checkout-field-full">
+
                 <span>Full Name</span>
 
                 <input
@@ -151,9 +158,11 @@
                   autocomplete="name"
                   required
                 >
+
               </label>
 
               <label class="checkout-field checkout-field-full">
+
                 <span>Phone Number</span>
 
                 <input
@@ -165,9 +174,11 @@
                   maxlength="10"
                   required
                 >
+
               </label>
 
               <label class="checkout-field checkout-field-full">
+
                 <span>Address</span>
 
                 <textarea
@@ -177,9 +188,11 @@
                   autocomplete="street-address"
                   required
                 ></textarea>
+
               </label>
 
               <label class="checkout-field">
+
                 <span>City</span>
 
                 <input
@@ -189,9 +202,11 @@
                   autocomplete="address-level2"
                   required
                 >
+
               </label>
 
               <label class="checkout-field">
+
                 <span>State</span>
 
                 <input
@@ -201,9 +216,11 @@
                   autocomplete="address-level1"
                   required
                 >
+
               </label>
 
               <label class="checkout-field">
+
                 <span>PIN Code</span>
 
                 <input
@@ -215,9 +232,11 @@
                   maxlength="6"
                   required
                 >
+
               </label>
 
               <label class="checkout-field">
+
                 <span>Landmark</span>
 
                 <input
@@ -225,6 +244,7 @@
                   id="customerLandmark"
                   placeholder="Nearby landmark"
                 >
+
               </label>
 
             </div>
@@ -239,7 +259,7 @@
 
           </div>
 
-          <!-- Payment -->
+          <!-- Payment section -->
 
           <section
             class="payment-section"
@@ -262,11 +282,15 @@
                 >
 
                 <span>
-                  <strong>Cash on Delivery</strong>
+
+                  <strong>
+                    Cash on Delivery
+                  </strong>
 
                   <small>
                     Pay when the order arrives
                   </small>
+
                 </span>
 
               </label>
@@ -280,11 +304,15 @@
                 >
 
                 <span>
-                  <strong>UPI</strong>
+
+                  <strong>
+                    UPI
+                  </strong>
 
                   <small>
                     Online UPI payment
                   </small>
+
                 </span>
 
               </label>
@@ -334,35 +362,43 @@
         <div class="checkout-price-section">
 
           <div class="checkout-price-row">
+
             <span>Original Price</span>
 
             <span id="checkoutOriginalPrice">
               ₹0
             </span>
+
           </div>
 
           <div class="checkout-price-row checkout-discount-row">
+
             <span>Discount</span>
 
             <span id="checkoutDiscount">
               − ₹0
             </span>
+
           </div>
 
           <div class="checkout-price-row">
+
             <span>Delivery Charge</span>
 
             <span class="checkout-free-delivery">
               FREE
             </span>
+
           </div>
 
           <div class="checkout-total-row">
+
             <span>Total Amount</span>
 
             <strong id="checkoutTotal">
               ₹0
             </strong>
+
           </div>
 
           <p
@@ -383,6 +419,7 @@
       id="checkoutEmpty"
       hidden
     >
+
       <div class="checkout-status-icon">
         🛒
       </div>
@@ -399,34 +436,122 @@
       >
         Continue Shopping
       </button>
+
     </section>
 
-  <!-- Order success -->
+    <!-- Order success -->
 
-<section
-  class="checkout-success-view"
-  id="checkoutSuccess"
-  hidden
->
-  <div class="checkout-success-icon">
-    ✓
-  </div>
+    <section
+      class="checkout-success-view"
+      id="checkoutSuccess"
+      hidden
+    >
 
-  <h2>Order Placed Successfully</h2>
+      <div class="checkout-success-icon">
+        ✓
+      </div>
 
-  
+      <h2>
+        Order Placed Successfully
+      </h2>
 
-  <button
-    class="checkout-success-button"
-    type="button"
-    onclick="window.location.href='products.html'"
-  >
-    Continue Shopping
-  </button>
-</section>
+      <button
+        class="checkout-success-button"
+        type="button"
+        onclick="window.location.href='products.html'"
+      >
+        Continue Shopping
+      </button>
+
+    </section>
 
   </main>
 
+  <!-- Automatically hide the header after success -->
+
+<script>
+  document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+      const checkoutPageHeading =
+        document.getElementById(
+          "checkoutPageHeading"
+        );
+
+      const checkoutSuccess =
+        document.getElementById(
+          "checkoutSuccess"
+        );
+
+      const checkoutEmpty =
+        document.getElementById(
+          "checkoutEmpty"
+        );
+
+      if (
+        !checkoutPageHeading ||
+        !checkoutSuccess ||
+        !checkoutEmpty
+      ) {
+        return;
+      }
+
+      function updateCheckoutHeader() {
+        const successIsVisible =
+          !checkoutSuccess.hidden;
+
+        const emptyIsVisible =
+          !checkoutEmpty.hidden;
+
+        const hideHeader =
+          successIsVisible ||
+          emptyIsVisible;
+
+        checkoutPageHeading.hidden =
+          hideHeader;
+
+        document.body.classList.toggle(
+          "checkout-success-active",
+          successIsVisible
+        );
+
+        document.body.classList.toggle(
+          "checkout-empty-active",
+          emptyIsVisible
+        );
+      }
+
+      const pageStateObserver =
+        new MutationObserver(
+          updateCheckoutHeader
+        );
+
+      pageStateObserver.observe(
+        checkoutSuccess,
+        {
+          attributes: true,
+          attributeFilter: [
+            "hidden"
+          ]
+        }
+      );
+
+      pageStateObserver.observe(
+        checkoutEmpty,
+        {
+          attributes: true,
+          attributeFilter: [
+            "hidden"
+          ]
+        }
+      );
+
+      updateCheckoutHeader();
+    }
+  );
+</script>
+
   <script src="checkout.js"></script>
+
 </body>
 </html>
