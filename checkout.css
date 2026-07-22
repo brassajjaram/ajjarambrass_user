@@ -689,6 +689,25 @@ button {
 
   font-size: 13px;
   font-weight: 700;
+
+
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+
+.checkout-status-card button:hover {
+  box-shadow:
+    0 0 18px rgba(70, 233, 236, 0.741);
+
+  transform: translateY(-2px);
+}
+
+.checkout-status-card button:active {
+  box-shadow:
+    0 5px 12px rgba(5, 136, 14, 0.18);
+
+  transform: translateY(0);
 }
 
 /* =================================
@@ -997,5 +1016,51 @@ button {
     transform:
       scale(1.25)
       rotate(45deg);
+  }
+}
+/* Hide checkout header during order success */
+
+body.checkout-success-active
+.checkout-page {
+  padding-top: 0;
+}
+
+body.checkout-success-active
+.checkout-success-view {
+  min-height: 100vh;
+  padding-top: 40px;
+}
+
+@media (max-width: 760px) {
+  body.checkout-success-active
+  .checkout-success-view {
+    min-height: 100vh;
+    padding-top: 30px;
+  }
+}
+/* Hide top spacing for empty checkout page */
+
+body.checkout-empty-active
+.checkout-page {
+  padding-top: 0;
+}
+
+body.checkout-empty-active
+#checkoutEmpty {
+  margin-top: 0;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 760px) {
+  body.checkout-empty-active
+  #checkoutEmpty {
+    min-height: 100vh;
+    padding-top: 30px;
+    padding-bottom: 30px;
   }
 }
