@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Ajjaram Brass Products</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="products.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="header-container">
+
+      <a
+        href="index.html"
+        class="logo"
+        aria-label="Home"
+      >
+        <span class="logo-main">
+          AJJARAM
+        </span>
+
+        <span class="logo-sub">
+          Brass &amp; Sources
+        </span>
+      </a>
+
+      <form
+        class="search-form"
+        id="productsSearchForm"
+      >
+        <input
+          type="search"
+          id="productsSearchInput"
+          placeholder="Search..."
+          aria-label="Search products"
+          autocomplete="off"
+        >
+
+        <button
+          type="submit"
+          aria-label="Search"
+        >
+          <svg viewBox="0 0 24 24">
+            <circle
+              cx="11"
+              cy="11"
+              r="7"
+            ></circle>
+
+            <path
+              d="M20 20L16.5 16.5"
+            ></path>
+          </svg>
+        </button>
+      </form>
+
+      <button
+        class="profile-button"
+        id="profileButton"
+        type="button"
+        aria-label="Open profile"
+      >
+        <svg viewBox="0 0 24 24">
+          <circle
+            cx="12"
+            cy="8"
+            r="4"
+          ></circle>
+
+          <path
+            d="M4 21C4 16.5 7.5 14 12 14C16.5 14 20 16.5 20 21"
+          ></path>
+        </svg>
+      </button>
+
+    </div>
+  </header>
+
+  <main class="catalog-layout">
+
+    <aside class="category-sidebar">
+      <h2>Categories</h2>
+
+      <button
+        class="category-item active"
+        type="button"
+        data-category="all"
+      >
+        <img
+          src="images/elephant.png"
+          alt=""
+        >
+
+        <span>All Products</span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-category="pooja"
+      >
+        <img
+          src="images/diya.png"
+          alt=""
+        >
+
+        <span>Pooja Items</span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-category="kitchen"
+      >
+        <img
+          src="images/dinner set.png"
+          alt=""
+        >
+
+        <span>Kitchen Items</span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-category="idols"
+      >
+        <img
+          src="images/krishna.png"
+          alt=""
+        >
+
+        <span>Brass Idols</span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-category="decor"
+      >
+        <img
+          src="images/flower-vase.png"
+          alt=""
+        >
+
+        <span>Home Décor</span>
+      </button>
+
+      <button
+        class="category-item"
+        type="button"
+        data-category="gifting"
+      >
+        <img
+          src="images/swan.png"
+          alt=""
+        >
+
+        <span>Gifting</span>
+      </button>
+    </aside>
+
+    <section class="catalog-content">
+
+      <div class="catalog-heading">
+        <div>
+          <h1 id="catalogTitle">
+            All Products
+          </h1>
+        </div>
+
+        <button
+          class="catalog-back-button"
+          type="button"
+          onclick="window.location.href='index.html'"
+          aria-label="Back to home"
+        >
+          Back
+        </button>
+      </div>
+
+      <p
+        class="catalog-message"
+        id="catalogMessage"
+        aria-live="polite"
+      ></p>
+
+      <div
+        class="catalog-grid"
+        id="catalogGrid"
+      ></div>
+
+    </section>
+
+  </main>
+
+  <div
+    class="cart-toast"
+    id="cartToast"
+    aria-live="polite"
+  ></div>
+
+  <!-- Profile bottom sheet overlay -->
+  <div
+    class="profile-sheet-overlay"
+    id="profileSheetOverlay"
+    hidden
+  ></div>
+
+  <!-- Profile bottom sheet -->
+  <section
+    class="profile-bottom-sheet"
+    id="profileBottomSheet"
+    aria-hidden="true"
+    aria-labelledby="profileSheetTitle"
+  >
+    <div class="profile-sheet-handle"></div>
+
+    <div class="profile-sheet-header">
+      <div>
+        <p class="profile-sheet-label">
+          My Account
+        </p>
+
+        <h2 id="profileSheetTitle">
+          Profile Details
+        </h2>
+      </div>
+
+      <button
+        class="profile-sheet-close"
+        id="profileSheetClose"
+        type="button"
+        aria-label="Close profile"
+      >
+        &times;
+      </button>
+    </div>
+
+    <div
+      class="profile-sheet-loading"
+      id="profileSheetLoading"
+    >
+      Loading profile...
+    </div>
+
+    <div
+      class="profile-user-content"
+      id="profileUserContent"
+      hidden
+    >
+      <div class="profile-avatar">
+        <span id="profileAvatarLetter">
+          U
+        </span>
+      </div>
+
+      <div class="profile-user-heading">
+        <h3 id="profileUserName">
+          User
+        </h3>
+
+        <p id="profileUserStatus">
+          Logged in
+        </p>
+      </div>
+
+      <div class="profile-details-list">
+
+        <div class="profile-detail-row">
+          <span class="profile-detail-label">
+            Phone
+          </span>
+
+          <strong id="profileUserPhone">
+            Not available
+          </strong>
+        </div>
+
+        <div class="profile-detail-row">
+          <span class="profile-detail-label">
+            Customer ID
+          </span>
+
+          <strong
+            class="profile-customer-code"
+            id="profileCustomerCode"
+          >
+            ------
+          </strong>
+        </div>
+
+      </div>
+
+      <button
+        class="profile-logout-button"
+        id="profileLogoutButton"
+        type="button"
+      >
+        Logout
+      </button>
+
+      <p
+        class="profile-sheet-message"
+        id="profileSheetMessage"
+        aria-live="polite"
+      ></p>
+    </div>
+
+    <div
+      class="profile-guest-content"
+      id="profileGuestContent"
+      hidden
+    >
+      <div class="profile-avatar">
+        <span>?</span>
+      </div>
+
+      <h3>You are not logged in</h3>
+
+      <p>
+        Login to view your profile and saved account details.
+      </p>
+
+      <button
+        class="profile-login-button"
+        id="profileLoginButton"
+        type="button"
+      >
+        Login
+      </button>
+    </div>
+  </section>
+
+  <script src="page-loader.js"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="script.js"></script>
+  <script src="products.js"></script>
+
+</body>
+</html>

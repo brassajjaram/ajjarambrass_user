@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Checkout | Ajjaram Brass</title>
+
+  <link
+    rel="stylesheet"
+    href="checkout.css"
+  >
+</head>
+
+<body>
+
+  <main class="checkout-page">
+
+    <header class="checkout-page-heading">
+
+      <button
+        class="checkout-back-button"
+        type="button"
+        aria-label="Back to cart"
+        onclick="window.location.href='cart.html'"
+      >
+        &times;
+      </button>
+
+      <div>
+        <h1>Checkout</h1>
+
+        <p>
+          Select your delivery address and confirm your order.
+        </p>
+      </div>
+
+    </header>
+
+    <!-- Loading -->
+
+    <section
+      class="checkout-loading"
+      id="checkoutLoading"
+    >
+      Loading checkout...
+    </section>
+
+    <!-- Checkout content -->
+
+    <div
+      class="checkout-layout"
+      id="checkoutLayout"
+      hidden
+    >
+
+      <!-- Delivery and payment card -->
+
+      <section class="checkout-card">
+
+        <div class="delivery-heading-row">
+
+          <div>
+            <h2>Delivery Address</h2>
+
+            <p>
+              Choose or update your delivery address.
+            </p>
+          </div>
+
+          
+
+        </div>
+
+        <!-- Saved address card -->
+
+        <div
+          class="saved-address-card"
+          id="savedAddressCard"
+          hidden
+        >
+
+          <div class="saved-address-header">
+
+            <div class="saved-customer-heading">
+
+              <strong id="savedCustomerName">
+                Customer Name
+              </strong>
+
+              <span class="saved-address-badge">
+                HOME
+              </span>
+
+            </div>
+
+            <button
+              class="edit-address-button"
+              id="editAddressButton"
+              type="button"
+            >
+              Edit
+            </button>
+
+          </div>
+
+          <p
+            class="saved-address-text"
+            id="savedAddressText"
+          ></p>
+
+          <p class="saved-phone-text">
+            Phone:
+            <strong id="savedCustomerPhone"></strong>
+          </p>
+
+          <div class="selected-address-row">
+            <span class="selected-address-check">
+              ✓
+            </span>
+
+            <span>
+              Delivering to this address
+            </span>
+          </div>
+
+        </div>
+
+        <form id="checkoutForm">
+
+          <!-- Address form -->
+
+          <div
+            class="address-form-section"
+            id="addressFormSection"
+          >
+
+            <div class="checkout-form-grid">
+
+              <label class="checkout-field checkout-field-full">
+                <span>Full Name</span>
+
+                <input
+                  type="text"
+                  id="customerName"
+                  placeholder="Enter your full name"
+                  autocomplete="name"
+                  required
+                >
+              </label>
+
+              <label class="checkout-field checkout-field-full">
+                <span>Phone Number</span>
+
+                <input
+                  type="tel"
+                  id="customerPhone"
+                  placeholder="10-digit mobile number"
+                  autocomplete="tel"
+                  inputmode="numeric"
+                  maxlength="10"
+                  required
+                >
+              </label>
+
+              <label class="checkout-field checkout-field-full">
+                <span>Address</span>
+
+                <textarea
+                  id="customerAddress"
+                  rows="4"
+                  placeholder="House number, street and area"
+                  autocomplete="street-address"
+                  required
+                ></textarea>
+              </label>
+
+              <label class="checkout-field">
+                <span>City</span>
+
+                <input
+                  type="text"
+                  id="customerCity"
+                  placeholder="City"
+                  autocomplete="address-level2"
+                  required
+                >
+              </label>
+
+              <label class="checkout-field">
+                <span>State</span>
+
+                <input
+                  type="text"
+                  id="customerState"
+                  placeholder="State"
+                  autocomplete="address-level1"
+                  required
+                >
+              </label>
+
+              <label class="checkout-field">
+                <span>PIN Code</span>
+
+                <input
+                  type="text"
+                  id="customerPincode"
+                  placeholder="6-digit PIN code"
+                  autocomplete="postal-code"
+                  inputmode="numeric"
+                  maxlength="6"
+                  required
+                >
+              </label>
+
+              <label class="checkout-field">
+                <span>Landmark</span>
+
+                <input
+                  type="text"
+                  id="customerLandmark"
+                  placeholder="Nearby landmark"
+                >
+              </label>
+
+            </div>
+
+            <button
+              class="save-address-button"
+              id="saveAddressButton"
+              type="button"
+            >
+              Save Address
+            </button>
+
+          </div>
+
+          <!-- Payment -->
+
+          <section
+            class="payment-section"
+            id="paymentSection"
+          >
+
+            <h2 class="payment-heading">
+              Payment Method
+            </h2>
+
+            <div class="payment-options">
+
+              <label class="payment-option">
+
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="Cash on Delivery"
+                  checked
+                >
+
+                <span>
+                  <strong>Cash on Delivery</strong>
+
+                  <small>
+                    Pay when the order arrives
+                  </small>
+                </span>
+
+              </label>
+
+              <label class="payment-option">
+
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="UPI"
+                >
+
+                <span>
+                  <strong>UPI</strong>
+
+                  <small>
+                    Online UPI payment
+                  </small>
+                </span>
+
+              </label>
+
+            </div>
+
+            <div
+              class="upi-message"
+              id="upiMessage"
+              hidden
+            >
+              UPI payment is not connected yet.
+              Please select Cash on Delivery.
+            </div>
+
+            <button
+              class="place-order-button"
+              id="placeOrderButton"
+              type="submit"
+            >
+              Place Order
+            </button>
+
+            <p
+              class="checkout-message"
+              id="checkoutMessage"
+              aria-live="polite"
+            ></p>
+
+          </section>
+
+        </form>
+
+      </section>
+
+      <!-- Order summary -->
+
+      <aside class="checkout-card order-summary-card">
+
+        <h2>Order Summary</h2>
+
+        <div
+          class="checkout-products"
+          id="checkoutProducts"
+        ></div>
+
+        <div class="checkout-price-section">
+
+          <div class="checkout-price-row">
+            <span>Original Price</span>
+
+            <span id="checkoutOriginalPrice">
+              ₹0
+            </span>
+          </div>
+
+          <div class="checkout-price-row checkout-discount-row">
+            <span>Discount</span>
+
+            <span id="checkoutDiscount">
+              − ₹0
+            </span>
+          </div>
+
+          <div class="checkout-price-row">
+            <span>Delivery Charge</span>
+
+            <span class="checkout-free-delivery">
+              FREE
+            </span>
+          </div>
+
+          <div class="checkout-total-row">
+            <span>Total Amount</span>
+
+            <strong id="checkoutTotal">
+              ₹0
+            </strong>
+          </div>
+
+          <p
+            class="checkout-savings"
+            id="checkoutSavings"
+          ></p>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+    <!-- Empty checkout -->
+
+    <section
+      class="checkout-status-card"
+      id="checkoutEmpty"
+      hidden
+    >
+      <div class="checkout-status-icon">
+        🛒
+      </div>
+
+      <h2>No products to checkout</h2>
+
+      <p>
+        Add products to your cart before continuing.
+      </p>
+
+      <button
+        type="button"
+        onclick="window.location.href='products.html'"
+      >
+        Continue Shopping
+      </button>
+    </section>
+
+  <!-- Order success -->
+
+<section
+  class="checkout-success-view"
+  id="checkoutSuccess"
+  hidden
+>
+  <div class="checkout-success-icon">
+    ✓
+  </div>
+
+  <h2>Order Placed Successfully</h2>
+
+  
+
+  <button
+    class="checkout-success-button"
+    type="button"
+    onclick="window.location.href='products.html'"
+  >
+    Continue Shopping
+  </button>
+</section>
+
+  </main>
+
+  <script src="checkout.js"></script>
+</body>
+</html>

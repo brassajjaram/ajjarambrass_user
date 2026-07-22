@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Responsive Header</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="header-container">
+
+ <a href="#" class="logo" aria-label="Home">
+  <span class="logo-main">AJJARAM</span>
+  <span class="logo-sub">Brass &amp; Sources</span>
+</a>
+
+      <!-- Search Bar -->
+      <form class="search-form" id="searchForm">
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="Search..."
+          aria-label="Search"
+        >
+
+        <button type="submit" aria-label="Search">
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="M20 20L16.5 16.5"></path>
+          </svg>
+        </button>
+      </form>
+
+      <!-- Profile Icon -->
+      <button
+        class="profile-button"
+        id="profileButton"
+        type="button"
+        aria-label="Open profile"
+      >
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="4"></circle>
+          <path d="M4 21C4 16.5 7.5 14 12 14C16.5 14 20 16.5 20 21"></path>
+        </svg>
+      </button>
+
+    </div>
+  </header>
+  <!-- Desktop Banner -->
+<section class="desktop-banner">
+  <img
+    src="images/brass-banner1.png"
+    alt="Ajjaram Brass banner"
+  >
+</section>
+
+<!-- Small Banners Title -->
+<div class="section-heading category-heading">
+  <h2>Shop by Category</h2>
+</div>
+<!-- Three Small Banners -->
+<section class="small-banners">
+  <a href="#" class="small-banner">
+    <img src="images/pooja-banner .png" alt="Brass idols">
+  </a>
+
+  <a href="#" class="small-banner">
+    <img src="images/home-banner.png" alt="Brass decor items">
+  </a>
+
+  <a href="#" class="small-banner">
+    <img src="images/idols-banner.png" alt="Brass glasses">
+  </a>
+</section>
+<!-- Products Title -->
+<div class="section-heading products-heading">
+  <h2>Our Products</h2>
+</div>
+<!-- Products Section -->
+<section class="products-section">
+
+  <!-- Search result message -->
+  <p class="search-result-message" id="searchResultMessage" aria-live="polite"></p>
+
+  <div class="products-grid" 
+  id="productsGrid">
+ </div>
+
+</section>
+<!-- Website Footer -->
+<footer class="site-footer" id="siteFooter">
+
+  <!-- Mobile footer control -->
+  <div class="mobile-footer-bar">
+    <p>
+      &copy; <span class="current-year"></span>
+      Ajjaram Brass &amp; Sources. All rights reserved.
+    </p>
+
+    <button
+      class="footer-toggle"
+      id="footerToggle"
+      type="button"
+      aria-label="Open footer"
+      aria-expanded="false"
+      aria-controls="footerDetails"
+    >
+      <span class="footer-toggle-icon">+</span>
+    </button>
+  </div>
+
+  <!-- Full footer details -->
+  <div class="footer-details" id="footerDetails">
+    <div class="footer-container">
+
+      <!-- Brand -->
+      <div class="footer-brand">
+        <a href="#" class="footer-logo" aria-label="Ajjaram home">
+          <span class="footer-logo-main">AJJARAM</span>
+          <span class="footer-logo-sub">
+            BRASS &amp; SOURCES
+          </span>
+        </a>
+
+        <p class="footer-description">
+          Traditional brass products crafted for pooja,
+          home décor, gifting and everyday use.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="#">Home</a>
+          <a href="#productsGrid">Our Products</a>
+          <a href="#categories">Categories</a>
+          <a href="#contact">Contact Us</a>
+        </nav>
+      </div>
+
+      <!-- Categories -->
+      <div class="footer-column">
+        <h3>Categories</h3>
+
+        <nav class="footer-links" aria-label="Product categories">
+          <a href="#">Pooja Items</a>
+          <a href="#">Home Décor</a>
+          <a href="#">Brass Idols</a>
+          <a href="#">Kitchen Brass</a>
+        </nav>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer-column" id="contact">
+        <h3>Contact</h3>
+
+        <div class="footer-contact">
+          <a href="tel:+919876543210">
+            +91 98765 43210
+          </a>
+
+          <a href="mailto:info@ajjarambrass.com">
+            info@ajjarambrass.com
+          </a>
+
+          <p>Ajjaram, Andhra Pradesh, India</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Desktop copyright bar -->
+  <div class="footer-bottom">
+    <p>
+      &copy; <span class="current-year"></span>
+      Ajjaram Brass &amp; Sources. All rights reserved.
+    </p>
+
+    <button
+      class="back-to-top"
+      id="backToTop"
+      type="button"
+      aria-label="Back to top"
+    >
+      ↑
+    </button>
+  </div>
+
+</footer>
+<!-- Profile bottom sheet overlay -->
+<div
+  class="profile-sheet-overlay"
+  id="profileSheetOverlay"
+  hidden
+></div>
+
+<!-- Profile bottom sheet -->
+<section
+  class="profile-bottom-sheet"
+  id="profileBottomSheet"
+  aria-hidden="true"
+  aria-labelledby="profileSheetTitle"
+>
+  <div class="profile-sheet-handle"></div>
+
+  <div class="profile-sheet-header">
+    <div>
+      <p class="profile-sheet-label">
+        My Account
+      </p>
+
+      <h2 id="profileSheetTitle">
+        Profile Details
+      </h2>
+    </div>
+
+    <button
+      class="profile-sheet-close"
+      id="profileSheetClose"
+      type="button"
+      aria-label="Close profile"
+    >
+      &times;
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div
+    class="profile-sheet-loading"
+    id="profileSheetLoading"
+  >
+    Loading profile...
+  </div>
+
+  <!-- Logged-in user -->
+  <div
+    class="profile-user-content"
+    id="profileUserContent"
+    hidden
+  >
+    <div class="profile-avatar">
+      <span id="profileAvatarLetter">
+        U
+      </span>
+    </div>
+
+    <div class="profile-user-heading">
+      <h3 id="profileUserName">
+        User
+      </h3>
+
+      <p id="profileUserStatus">
+        Logged in
+      </p>
+    </div>
+
+    <div class="profile-details-list">
+
+      <div class="profile-detail-row">
+        <span class="profile-detail-label">
+          Phone
+        </span>
+
+        <strong id="profileUserPhone">
+          Not available
+        </strong>
+      </div>
+
+      <div class="profile-detail-row">
+        <span class="profile-detail-label">
+          Customer ID
+        </span>
+
+        <strong
+          class="profile-customer-code"
+          id="profileCustomerCode"
+        >
+          ------
+        </strong>
+      </div>
+
+    </div>
+
+    <button
+      class="profile-logout-button"
+      id="profileLogoutButton"
+      type="button"
+    >
+      Logout
+    </button>
+
+    <p
+      class="profile-sheet-message"
+      id="profileSheetMessage"
+      aria-live="polite"
+    ></p>
+  </div>
+
+  <!-- Guest user -->
+  <div
+    class="profile-guest-content"
+    id="profileGuestContent"
+    hidden
+  >
+    <div class="profile-avatar">
+      <span>?</span>
+    </div>
+
+    <h3>You are not logged in</h3>
+
+    <p>
+      Login to view your profile and saved account details.
+    </p>
+
+    <button
+      class="profile-login-button"
+      id="profileLoginButton"
+      type="button"
+    >
+      Login
+    </button>
+  </div>
+</section>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<script src="script.js"></script>
+<script src="index-products.js"></script>
+</body>
+</html>

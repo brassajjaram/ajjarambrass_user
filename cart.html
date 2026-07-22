@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Your Cart | Ajjaram Brass</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="cart.css">
+</head>
+
+<body>
+
+  <main class="cart-page">
+
+    <header class="cart-header">
+
+<button
+  class="cart-back-button"
+  type="button"
+  aria-label="Back to product"
+  onclick="
+    window.location.href =
+      sessionStorage.getItem('ajjaramLastProductUrl')
+      || 'products.html';
+  "
+>
+  &times;
+</button>
+
+      <div class="cart-heading">
+        
+        <h1>Your Cart</h1>
+      </div>
+
+      <span
+        class="cart-header-count"
+        id="cartHeaderCount"
+      >
+        0 items
+      </span>
+
+    </header>
+
+  <section
+  class="cart-layout"
+  id="cartCard"
+  hidden
+>
+  <!-- Cart items card -->
+
+  <section class="cart-items-card">
+    <div
+      class="cart-products"
+      id="cartProducts"
+    ></div>
+  </section>
+
+  <!-- Price details card -->
+
+  <section class="price-details-card">
+    <h2 class="price-details-title">
+      Price Details
+    </h2>
+
+    <div class="cart-price-detail-row">
+      <span>Original Price</span>
+
+      <span id="cartOriginalPrice">
+        ₹0
+      </span>
+    </div>
+
+    <div class="cart-price-detail-row discount-row">
+      <span>Discount</span>
+
+      <span id="cartDiscountAmount">
+        − ₹0
+      </span>
+    </div>
+
+    <div class="cart-price-detail-row">
+      <span>Delivery Charge</span>
+
+      <span class="free-delivery">
+        FREE
+      </span>
+    </div>
+
+    <div class="cart-total-row">
+      <span>Total Amount</span>
+
+      <strong id="cartTotal">
+        ₹0
+      </strong>
+    </div>
+
+    <p
+      class="cart-savings-text"
+      id="cartSavingsText"
+    >
+      You saved ₹0 on this order
+    </p>
+  </section>
+
+  <!-- Pay button outside both cards -->
+
+  <div class="cart-payment-area">
+    <button
+      class="cart-pay-button"
+      id="payButton"
+      type="button"
+    >
+      Buy Now
+    </button>
+  </div>
+</section>
+
+    <section
+      class="empty-cart"
+      id="emptyCart"
+      hidden
+    >
+      <div class="empty-cart-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="9" cy="20" r="1.5"></circle>
+          <circle cx="18" cy="20" r="1.5"></circle>
+          <path d="M3 4H5L7.2 15H18.5L21 8H6"></path>
+        </svg>
+      </div>
+
+      <h2>Your cart is empty</h2>
+
+      <p>
+        Add brass products to continue shopping.
+      </p>
+
+      <button
+        class="continue-shopping-button"
+        type="button"
+        onclick="window.location.href='products.html'"
+      >
+        Continue Shopping
+      </button>
+    </section>
+
+  </main>
+<!-- Authentication overlay -->
+<div
+  class="cart-login-overlay"
+  id="cartLoginOverlay"
+  hidden
+></div>
+
+<!-- Authentication bottom sheet -->
+<section
+  class="cart-login-sheet"
+  id="cartLoginSheet"
+  aria-hidden="true"
+  aria-labelledby="cartAuthTitle"
+>
+  <div class="cart-login-handle"></div>
+
+  <div class="cart-login-header">
+    <div>
+      <p class="cart-login-label">
+        Ajjaram Account
+      </p>
+
+      <h2 id="cartAuthTitle">
+        Login to Continue
+      </h2>
+    </div>
+
+    <button
+      class="cart-login-close"
+      id="cartLoginClose"
+      type="button"
+      aria-label="Close"
+    >
+      &times;
+    </button>
+  </div>
+
+  <!-- Login section -->
+
+  <section id="cartLoginSection">
+
+    <p class="cart-login-description">
+      Login using your registered phone number.
+    </p>
+
+    <form
+      class="cart-login-form"
+      id="cartLoginForm"
+    >
+      <label class="cart-login-field">
+        <span>Phone Number</span>
+
+        <div class="phone-input-row">
+          <span class="phone-country-code">
+            +91
+          </span>
+
+          <input
+            type="tel"
+            id="cartLoginPhone"
+            placeholder="10-digit phone number"
+            autocomplete="tel"
+            inputmode="numeric"
+            maxlength="10"
+            required
+          >
+        </div>
+      </label>
+
+      <label class="cart-login-field">
+        <span>Password</span>
+
+        <div class="cart-password-wrapper">
+          <input
+            type="password"
+            id="cartLoginPassword"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            minlength="6"
+            required
+          >
+
+          <button
+            class="cart-password-toggle"
+            id="cartLoginPasswordToggle"
+            type="button"
+            aria-label="Show password"
+          >
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12Z"
+              ></path>
+
+              <circle
+                cx="12"
+                cy="12"
+                r="2.5"
+              ></circle>
+            </svg>
+          </button>
+        </div>
+      </label>
+
+      <button
+        class="cart-login-submit"
+        id="cartLoginSubmit"
+        type="submit"
+      >
+        Login and Continue
+      </button>
+
+      <p
+        class="cart-login-message"
+        id="cartLoginMessage"
+        aria-live="polite"
+      ></p>
+    </form>
+
+    <div class="cart-login-signup">
+      <span>New to Ajjaram?</span>
+
+      <button
+        class="auth-switch-button"
+        id="showCartSignupButton"
+        type="button"
+      >
+        Create Account
+      </button>
+    </div>
+
+  </section>
+
+  <!-- Signup section -->
+
+  <section
+    id="cartSignupSection"
+    hidden
+  >
+
+    <p class="cart-login-description">
+      Create an account before continuing to checkout.
+    </p>
+
+    <form
+      class="cart-login-form"
+      id="cartSignupForm"
+    >
+      <label class="cart-login-field">
+        <span>Full Name</span>
+
+        <input
+          type="text"
+          id="cartSignupName"
+          placeholder="Enter your full name"
+          autocomplete="name"
+          required
+        >
+      </label>
+
+      <label class="cart-login-field">
+        <span>Phone Number</span>
+
+        <div class="phone-input-row">
+          <span class="phone-country-code">
+            +91
+          </span>
+
+          <input
+            type="tel"
+            id="cartSignupPhone"
+            placeholder="10-digit phone number"
+            autocomplete="tel"
+            inputmode="numeric"
+            maxlength="10"
+            required
+          >
+        </div>
+      </label>
+
+      <label class="cart-login-field">
+        <span>Create Password</span>
+
+        <div class="cart-password-wrapper">
+          <input
+            type="password"
+            id="cartSignupPassword"
+            placeholder="Create a password"
+            autocomplete="new-password"
+            minlength="6"
+            required
+          >
+
+          <button
+            class="cart-password-toggle"
+            id="cartSignupPasswordToggle"
+            type="button"
+            aria-label="Show password"
+          >
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M2.5 12S6 6.5 12 6.5 21.5 12 21.5 12 18 17.5 12 17.5 2.5 12 2.5 12Z"
+              ></path>
+
+              <circle
+                cx="12"
+                cy="12"
+                r="2.5"
+              ></circle>
+            </svg>
+          </button>
+        </div>
+      </label>
+
+      <label class="cart-login-field">
+        <span>Confirm Password</span>
+
+        <input
+          type="password"
+          id="cartSignupConfirmPassword"
+          placeholder="Enter the password again"
+          autocomplete="new-password"
+          minlength="6"
+          required
+        >
+      </label>
+
+      <button
+        class="cart-login-submit"
+        id="cartSignupSubmit"
+        type="submit"
+      >
+        Create Account
+      </button>
+
+      <p
+        class="cart-login-message"
+        id="cartSignupMessage"
+        aria-live="polite"
+      ></p>
+    </form>
+
+    <div class="cart-login-signup">
+      <span>Already registered?</span>
+
+      <button
+        class="auth-switch-button"
+        id="showCartLoginButton"
+        type="button"
+      >
+        Login
+      </button>
+    </div>
+
+  </section>
+
+</section>
+
+</section>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="cart.js"></script>
+</body>
+</html>
