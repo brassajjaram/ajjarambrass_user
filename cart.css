@@ -1322,3 +1322,27 @@ body.cart-login-open {
     min-height: 46px;
   }
 }
+#cartSignupMessage,
+#cartLoginMessage {
+  display: block;
+  width: 100%;
+  min-height: 18px;
+
+  margin: 10px 0 0;
+  padding: 0 5px;
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+  word-break: break-word;
+}
+
+#cartSignupMessage.error,
+#cartLoginMessage.error {
+  color: #c62828;
+}
