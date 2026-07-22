@@ -204,6 +204,119 @@ document.addEventListener("DOMContentLoaded", () => {
         ? loadingText
         : normalText;
   }
+  function getReadableAuthError(
+  error,
+  mode = "signup"
+) {
+  const originalMessage =
+    String(
+      error?.message ||
+      error ||
+      ""
+    ).trim();
+
+  const lowerMessage =
+    originalMessage.toLowerCase();
+
+  if (
+    lowerMessage.includes(
+      "already registered"
+    ) ||
+    lowerMessage.includes(
+      "user already registered"
+    ) ||
+    lowerMessage.includes(
+      "email already"
+    ) ||
+    lowerMessage.includes(
+      "already exists"
+    )
+  ) {
+    return mode === "login"
+      ? "Incorrect phone number or password."
+      : "This phone number already has an account. Please login.";
+  }
+
+  if (
+    lowerMessage.includes(
+      "invalid login credentials"
+    )
+  ) {
+    return "Incorrect phone number or password.";
+  }
+
+  if (
+    lowerMessage.includes(
+      "database error"
+    ) ||
+    lowerMessage.includes(
+      "saving new user"
+    ) ||
+    lowerMessage.includes(
+      "failed to create user"
+    )
+  ) {
+    return "Unable to create your customer profile. Please try again.";
+  }
+
+  if (
+    lowerMessage.includes(
+      "email not confirmed"
+    )
+  ) {
+    return "Email confirmation is enabled in Supabase. Turn off Confirm Email.";
+  }
+
+  if (
+    lowerMessage.includes(
+      "provider is disabled"
+    ) ||
+    lowerMessage.includes(
+      "email authentication is disabled"
+    )
+  ) {
+    return "Email authentication is disabled in Supabase.";
+  }
+
+  if (
+    lowerMessage.includes(
+      "email address"
+    ) &&
+    lowerMessage.includes(
+      "invalid"
+    )
+  ) {
+    return "The internal login email was rejected. Check phoneToInternalEmail().";
+  }
+
+  if (
+    lowerMessage.includes(
+      "rate limit"
+    ) ||
+    lowerMessage.includes(
+      "too many requests"
+    )
+  ) {
+    return "Too many attempts. Please wait a few minutes and try again.";
+  }
+
+  if (
+    lowerMessage.includes(
+      "signup is disabled"
+    )
+  ) {
+    return "Customer account creation is disabled in Supabase.";
+  }
+
+  return (
+    originalMessage ||
+    (
+      mode === "login"
+        ? "Unable to login."
+        : "Unable to create account."
+    )
+  );
+}
 
   /* =================================
      PHONE LOGIN HELPERS
@@ -1102,252 +1215,234 @@ document.addEventListener("DOMContentLoaded", () => {
   /* =================================
      CUSTOMER SIGNUP
   ================================= */
+/* =================================
+   CUSTOMER SIGNUP
+================================= */
 
-  cartSignupForm?.addEventListener(
-    "submit",
-    async (event) => {
-      event.preventDefault();
+cartSignupForm?.addEventListener(
+  "submit",
+  async (event) => {
+    event.preventDefault();
+
+    setMessage(
+      cartSignupMessage,
+      ""
+    );
+
+    if (
+      typeof supabaseClient ===
+      "undefined"
+    ) {
+      setMessage(
+        cartSignupMessage,
+        "Supabase is not connected.",
+        true
+      );
+
+      return;
+    }
+
+    const fullName =
+      cartSignupName
+        ?.value
+        .trim() || "";
+
+    const phone =
+      normalizeIndianPhone(
+        cartSignupPhone?.value
+      );
+
+    const password =
+      cartSignupPassword
+        ?.value || "";
+
+    const confirmPassword =
+      cartSignupConfirmPassword
+        ?.value || "";
+
+    if (fullName.length < 2) {
+      setMessage(
+        cartSignupMessage,
+        "Enter your full name.",
+        true
+      );
+
+      cartSignupName?.focus();
+
+      return;
+    }
+
+    if (!phone) {
+      setMessage(
+        cartSignupMessage,
+        "Enter a valid 10-digit Indian phone number.",
+        true
+      );
+
+      cartSignupPhone?.focus();
+
+      return;
+    }
+
+    if (password.length < 6) {
+      setMessage(
+        cartSignupMessage,
+        "Password must contain at least 6 characters.",
+        true
+      );
+
+      cartSignupPassword?.focus();
+
+      return;
+    }
+
+    if (
+      password !==
+      confirmPassword
+    ) {
+      setMessage(
+        cartSignupMessage,
+        "Passwords do not match.",
+        true
+      );
+
+      cartSignupConfirmPassword
+        ?.focus();
+
+      return;
+    }
+
+    const internalEmail =
+      phoneToInternalEmail(phone);
+
+    setButtonLoading(
+      cartSignupSubmit,
+      true,
+      "Create Account",
+      "Creating Account..."
+    );
+
+    try {
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth
+          .signUp({
+            email:
+              internalEmail,
+
+            password:
+              password,
+
+            options: {
+              data: {
+                full_name:
+                  fullName,
+
+                name:
+                  fullName,
+
+                phone:
+                  phone,
+
+                formatted_phone:
+                  `+91${phone}`,
+
+                account_type:
+                  "customer",
+
+                login_type:
+                  "phone_alias"
+              }
+            }
+          });
+
+      if (error) {
+        throw error;
+      }
+
+      /*
+       * When an email already exists,
+       * Supabase may return a user with
+       * an empty identities array instead
+       * of returning a normal error.
+       */
+
+      if (
+        data?.user &&
+        Array.isArray(
+          data.user.identities
+        ) &&
+        data.user.identities.length === 0
+      ) {
+        throw new Error(
+          "This phone number already has an account. Please login."
+        );
+      }
+
+      if (
+        data?.user &&
+        data?.session
+      ) {
+        setMessage(
+          cartSignupMessage,
+          "Account created successfully."
+        );
+
+        const checkoutCart =
+          pendingCheckoutCart.length > 0
+            ? pendingCheckoutCart
+            : getCart();
+
+        setTimeout(() => {
+          continueToCheckout(
+            checkoutCart
+          );
+        }, 500);
+
+        return;
+      }
+
+      if (
+        data?.user &&
+        !data?.session
+      ) {
+        throw new Error(
+          "Account created, but Confirm Email is enabled. Turn it off in Supabase."
+        );
+      }
+
+      throw new Error(
+        "Unable to create account. Please try again."
+      );
+    } catch (error) {
+      console.error(
+        "Customer signup failed:",
+        error
+      );
+
+      const message =
+        getReadableAuthError(
+          error,
+          "signup"
+        );
 
       setMessage(
         cartSignupMessage,
-        ""
+        message,
+        true
       );
-
-      if (
-        typeof supabaseClient ===
-        "undefined"
-      ) {
-        setMessage(
-          cartSignupMessage,
-          "Supabase is not connected.",
-          true
-        );
-
-        return;
-      }
-
-      const fullName =
-        cartSignupName
-          ?.value
-          .trim() || "";
-
-      const phone =
-        normalizeIndianPhone(
-          cartSignupPhone?.value
-        );
-
-      const password =
-        cartSignupPassword
-          ?.value || "";
-
-      const confirmPassword =
-        cartSignupConfirmPassword
-          ?.value || "";
-
-      if (fullName.length < 2) {
-        setMessage(
-          cartSignupMessage,
-          "Enter your full name.",
-          true
-        );
-
-        cartSignupName?.focus();
-
-        return;
-      }
-
-      if (!phone) {
-        setMessage(
-          cartSignupMessage,
-          "Enter a valid 10-digit Indian phone number.",
-          true
-        );
-
-        cartSignupPhone?.focus();
-
-        return;
-      }
-
-      if (password.length < 6) {
-        setMessage(
-          cartSignupMessage,
-          "Password must contain at least 6 characters.",
-          true
-        );
-
-        cartSignupPassword?.focus();
-
-        return;
-      }
-
-      if (
-        password !==
-        confirmPassword
-      ) {
-        setMessage(
-          cartSignupMessage,
-          "Passwords do not match.",
-          true
-        );
-
-        cartSignupConfirmPassword
-          ?.focus();
-
-        return;
-      }
-
-      const internalEmail =
-        phoneToInternalEmail(phone);
 
       setButtonLoading(
         cartSignupSubmit,
-        true,
+        false,
         "Create Account",
         "Creating Account..."
       );
-
-      try {
-        const {
-          data,
-          error
-        } =
-          await supabaseClient.auth
-            .signUp({
-              email:
-                internalEmail,
-
-              password:
-                password,
-
-              options: {
-                data: {
-                  full_name:
-                    fullName,
-
-                  name:
-                    fullName,
-
-                  phone:
-                    phone,
-
-                  formatted_phone:
-                    `+91${phone}`,
-
-                  account_type:
-                    "customer",
-
-                  login_type:
-                    "phone_alias"
-                }
-              }
-            });
-
-        if (error) {
-          throw error;
-        }
-
-        if (
-          data?.user &&
-          data?.session
-        ) {
-          setMessage(
-            cartSignupMessage,
-            "Account created successfully."
-          );
-
-          const checkoutCart =
-            pendingCheckoutCart.length > 0
-              ? pendingCheckoutCart
-              : getCart();
-
-          setTimeout(() => {
-            continueToCheckout(
-              checkoutCart
-            );
-          }, 500);
-
-          return;
-        }
-
-        setMessage(
-          cartSignupMessage,
-          "Account created, but Confirm Email is enabled. Turn it off in Supabase.",
-          true
-        );
-
-        setButtonLoading(
-          cartSignupSubmit,
-          false,
-          "Create Account",
-          "Creating Account..."
-        );
-      } catch (error) {
-        console.error(
-          "Customer signup failed:",
-          error
-        );
-
-        let message =
-          error.message ||
-          "Unable to create account.";
-
-        const lowerMessage =
-          message.toLowerCase();
-
-        if (
-          lowerMessage.includes(
-            "already registered"
-          ) ||
-          lowerMessage.includes(
-            "user already registered"
-          ) ||
-          lowerMessage.includes(
-            "email already"
-          )
-        ) {
-          message =
-            "This phone number already has an account. Please login.";
-        } else if (
-          lowerMessage.includes(
-            "email address"
-          ) &&
-          lowerMessage.includes(
-            "invalid"
-          )
-        ) {
-          message =
-            "Internal login email was rejected. Change the Gmail address inside phoneToInternalEmail().";
-        } else if (
-          lowerMessage.includes(
-            "rate limit"
-          )
-        ) {
-          message =
-            "Too many attempts. Please wait and try again.";
-        } else if (
-          lowerMessage.includes(
-            "signup is disabled"
-          )
-        ) {
-          message =
-            "Customer account creation is disabled in Supabase.";
-        }
-
-        setMessage(
-          cartSignupMessage,
-          message,
-          true
-        );
-
-        setButtonLoading(
-          cartSignupSubmit,
-          false,
-          "Create Account",
-          "Creating Account..."
-        );
-      }
     }
-  );
+  }
+);
 
   /* =================================
      SWITCH LOGIN / SIGNUP
