@@ -15,264 +15,339 @@
 </head>
 
 <body>
-  <div
-  class="product-page-loader"
-  id="productPageLoader"
-  aria-hidden="true"
->
-  <div class="product-page-loader-content">
 
-    <div class="product-loader-image"></div>
-
-    <div class="product-loader-info">
-      <div class="product-loader-small"></div>
-      <div class="product-loader-title"></div>
-      <div class="product-loader-text"></div>
-      <div class="product-loader-text short"></div>
-      <div class="product-loader-price"></div>
-
-      <div class="product-loader-benefits">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<main class="product-details-page">
-
- 
-
-<!-- LEFT: IMAGE SLIDER -->
-
-<section
-  class="product-large-image product-slider"
-  id="productSlider"
-  aria-label="Product images"
->
-  <button
-    class="product-close-button"
-    type="button"
-    aria-label="Back to products"
-    onclick="window.location.href='products.html'"
-  >
-    &times;
-  </button>
+  <!-- Page loader -->
 
   <div
-    class="product-slider-track"
-    id="productSliderTrack"
+    class="product-page-loader"
+    id="productPageLoader"
+    aria-hidden="true"
   >
-    <div class="product-slide">
-      <img
-        class="product-slide-image"
-        src=""
-        alt=""
-        draggable="false"
-      >
-    </div>
+    <div class="product-page-loader-content">
 
-    <div class="product-slide">
-      <img
-        class="product-slide-image"
-        src=""
-        alt=""
-        draggable="false"
-      >
-    </div>
+      <div class="product-loader-image"></div>
 
-    <div class="product-slide">
-      <img
-        class="product-slide-image"
-        src=""
-        alt=""
-        draggable="false"
-      >
+      <div class="product-loader-info">
+
+        <div class="product-loader-small"></div>
+
+        <div class="product-loader-title"></div>
+
+        <div class="product-loader-text"></div>
+
+        <div class="product-loader-text short"></div>
+
+        <div class="product-loader-price"></div>
+
+        <div class="product-loader-benefits">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+
+      </div>
+
     </div>
   </div>
 
-  <div class="product-slider-dots">
-    <button
-      class="product-slider-dot active"
-      type="button"
-      data-slide="0"
-      aria-label="Show image 1"
-    ></button>
+  <main class="product-details-page">
 
-    <button
-      class="product-slider-dot"
-      type="button"
-      data-slide="1"
-      aria-label="Show image 2"
-    ></button>
+    <!-- LEFT: IMAGE SLIDER -->
 
-    <button
-      class="product-slider-dot"
-      type="button"
-      data-slide="2"
-      aria-label="Show image 3"
-    ></button>
-  </div>
-</section>
+    <section
+      class="product-large-image product-slider"
+      id="productSlider"
+      aria-label="Product images"
+    >
 
-  <!-- RIGHT: PRODUCT INFORMATION -->
+      <button
+        class="product-close-button"
+        type="button"
+        aria-label="Back to products"
+        onclick="window.location.href='products.html'"
+      >
+        &times;
+      </button>
 
-  <section class="product-main-info">
+      <div
+        class="product-slider-track"
+        id="productSliderTrack"
+      >
 
-    <div class="product-title-row">
-      <div>
-        <p
-          class="product-category"
-          id="productCategory"
-        ></p>
+        <div class="product-slide">
+          <img
+            class="product-slide-image"
+            src=""
+            alt=""
+            draggable="false"
+          >
+        </div>
 
-        <h1 id="productName"></h1>
+        <div class="product-slide">
+          <img
+            class="product-slide-image"
+            src=""
+            alt=""
+            draggable="false"
+          >
+        </div>
+
+        <div class="product-slide">
+          <img
+            class="product-slide-image"
+            src=""
+            alt=""
+            draggable="false"
+          >
+        </div>
+
       </div>
 
-      <span class="product-rating">
-        ★ <span id="productRating"></span>
-      </span>
-    </div>
+      <div class="product-slider-dots">
 
-   
+        <button
+          class="product-slider-dot active"
+          type="button"
+          data-slide="0"
+          aria-label="Show image 1"
+        ></button>
 
-    <p
-      class="product-short-description"
-      id="productShortDescription"
-    ></p>
+        <button
+          class="product-slider-dot"
+          type="button"
+          data-slide="1"
+          aria-label="Show image 2"
+        ></button>
 
-    
+        <button
+          class="product-slider-dot"
+          type="button"
+          data-slide="2"
+          aria-label="Show image 3"
+        ></button>
 
-    <div class="product-price-row">
-      <span
-        class="product-price"
-        id="productPrice"
-      ></span>
-
-      <span
-        class="product-old-price"
-        id="productOldPrice"
-      ></span>
-
-      <span
-        class="product-discount"
-        id="productDiscount"
-      ></span>
-    </div>
-
-    <p class="product-delivery">
-      🚚 Delivery in 5–7 days
-    </p>
-
-    <div class="product-benefits">
-
-      <div class="benefit-card">
-        <span class="benefit-icon">✓</span>
-        <span>Verified Quality</span>
       </div>
 
-      <div class="benefit-card">
-        <span class="benefit-icon">⚡</span>
-        <span>Fast Delivery</span>
-      </div>
-
-      <div class="benefit-card">
-        <span class="benefit-icon">↩</span>
-        <span>Easy Returns</span>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- LEFT BELOW IMAGE: PRODUCT DETAILS AND CART -->
-
-  <section class="product-lower-section">
-
-    <section class="product-details-block">
-      <h2>Product Details</h2>
-
-      <p
-        class="product-description"
-        id="productDescription"
-      ></p>
     </section>
 
-    <div class="product-cart-bar">
-  <div class="product-purchase-row">
+    <!-- RIGHT COLUMN -->
 
-    <button
-      class="product-add-to-cart"
-      id="productAddToCart"
-      type="button"
-    >
-      Add to Cart
-    </button>
+    <div class="product-right-column">
 
-    <div
-      class="product-quantity-control"
-      id="productQuantityControl"
-      hidden
-    >
-      <button
-        class="quantity-button"
-        id="decreaseQuantity"
-        type="button"
-        aria-label="Decrease quantity"
-      >
-        −
-      </button>
+      <!-- RIGHT: PRODUCT INFORMATION -->
 
-      <span
-        class="quantity-value"
-        id="productQuantity"
-      >
-        1
-      </span>
+      <section class="product-main-info">
 
-      <button
-        class="quantity-button"
-        id="increaseQuantity"
-        type="button"
-        aria-label="Increase quantity"
-      >
-        +
-      </button>
+        <div class="product-title-row">
+
+          <div>
+
+            <p
+              class="product-category"
+              id="productCategory"
+            ></p>
+
+            <h1 id="productName"></h1>
+
+          </div>
+
+          <span class="product-rating">
+            ★
+            <span id="productRating"></span>
+          </span>
+
+        </div>
+
+        <p
+          class="product-short-description"
+          id="productShortDescription"
+        ></p>
+
+        <div class="product-price-row">
+
+          <span
+            class="product-price"
+            id="productPrice"
+          ></span>
+
+          <span
+            class="product-old-price"
+            id="productOldPrice"
+          ></span>
+
+          <span
+            class="product-discount"
+            id="productDiscount"
+          ></span>
+
+        </div>
+
+        <p class="product-delivery">
+          🚚 Delivery in 5–7 days
+        </p>
+
+        <div class="product-benefits">
+
+          <div class="benefit-card">
+
+            <span class="benefit-icon">
+              ✓
+            </span>
+
+            <span>
+              Verified Quality
+            </span>
+
+          </div>
+
+          <div class="benefit-card">
+
+            <span class="benefit-icon">
+              ⚡
+            </span>
+
+            <span>
+              Fast Delivery
+            </span>
+
+          </div>
+
+          <div class="benefit-card">
+
+            <span class="benefit-icon">
+              ↩
+            </span>
+
+            <span>
+              Easy Returns
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- PRODUCT DETAILS BELOW RIGHT CARD -->
+
+      <section class="product-lower-section">
+
+        <section class="product-details-block">
+
+          <h2>
+            Product Details
+          </h2>
+
+          <p
+            class="product-description"
+            id="productDescription"
+          ></p>
+
+        </section>
+
+        <!-- CART CONTROLS -->
+
+        <div class="product-cart-bar">
+
+          <div class="product-purchase-row">
+
+            <button
+              class="product-add-to-cart"
+              id="productAddToCart"
+              type="button"
+            >
+              Add to Cart
+            </button>
+
+            <div
+              class="product-quantity-control"
+              id="productQuantityControl"
+              hidden
+            >
+
+              <button
+                class="quantity-button"
+                id="decreaseQuantity"
+                type="button"
+                aria-label="Decrease quantity"
+              >
+                −
+              </button>
+
+              <span
+                class="quantity-value"
+                id="productQuantity"
+              >
+                1
+              </span>
+
+              <button
+                class="quantity-button"
+                id="increaseQuantity"
+                type="button"
+                aria-label="Increase quantity"
+              >
+                +
+              </button>
+
+            </div>
+
+            <button
+              class="product-cart-icon"
+              id="productCartIcon"
+              type="button"
+              aria-label="Open cart"
+              onclick="window.location.href='cart.html'"
+              hidden
+            >
+
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <circle
+                  cx="9"
+                  cy="20"
+                  r="1.5"
+                ></circle>
+
+                <circle
+                  cx="18"
+                  cy="20"
+                  r="1.5"
+                ></circle>
+
+                <path
+                  d="M3 4H5L7.2 15H18.5L21 8H6"
+                ></path>
+              </svg>
+
+              <span
+                class="cart-item-count"
+                id="cartItemCount"
+              >
+                0
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
     </div>
 
-    <button
-      class="product-cart-icon"
-      id="productCartIcon"
-      type="button"
-      aria-label="Open cart"
-      onclick="window.location.href='cart.html'"
-      hidden
-    >
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="9" cy="20" r="1.5"></circle>
-        <circle cx="18" cy="20" r="1.5"></circle>
-        <path d="M3 4H5L7.2 15H18.5L21 8H6"></path>
-      </svg>
+  </main>
 
-      <span
-        class="cart-item-count"
-        id="cartItemCount"
-      >
-        0
-      </span>
-    </button>
+  <script src="page-loader.js"></script>
 
-  </div>
-</div>
-
-  </section>
-
-</main>
-<script src="page-loader.js"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
-<script src="product-full.js"></script>
+
+  <script src="supabase-config.js"></script>
+
+  <script src="product-full.js"></script>
+
 </body>
 </html>
