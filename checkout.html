@@ -18,6 +18,193 @@
 
 <body>
 
+  <!-- =================================
+       FULL CHECKOUT PAGE SHIMMER
+  ================================= -->
+
+  <div
+    class="page-shimmer-loader checkout-page-shimmer"
+    id="pageShimmerLoader"
+    aria-hidden="true"
+  >
+
+    <main class="checkout-shimmer-page">
+
+      <!-- Header shimmer -->
+
+      <header class="checkout-shimmer-header">
+
+        <div class="checkout-shimmer-back"></div>
+
+        <div class="checkout-shimmer-header-text">
+
+          <div class="checkout-shimmer-title"></div>
+
+          <div class="checkout-shimmer-subtitle"></div>
+
+        </div>
+
+      </header>
+
+      <!-- Main checkout shimmer -->
+
+      <div class="checkout-shimmer-layout">
+
+        <!-- Address and payment shimmer -->
+
+        <section class="checkout-shimmer-card">
+
+          <div class="checkout-shimmer-section-heading">
+
+            <div class="checkout-shimmer-heading-title"></div>
+
+            <div class="checkout-shimmer-heading-text"></div>
+
+          </div>
+
+          <div class="checkout-shimmer-form-grid">
+
+            <div class="checkout-shimmer-field checkout-shimmer-field-full">
+              <div class="checkout-shimmer-label"></div>
+              <div class="checkout-shimmer-input"></div>
+            </div>
+
+            <div class="checkout-shimmer-field checkout-shimmer-field-full">
+              <div class="checkout-shimmer-label"></div>
+              <div class="checkout-shimmer-input"></div>
+            </div>
+
+            <div class="checkout-shimmer-field checkout-shimmer-field-full">
+              <div class="checkout-shimmer-label"></div>
+              <div class="checkout-shimmer-textarea"></div>
+            </div>
+
+            <div class="checkout-shimmer-field">
+              <div class="checkout-shimmer-label"></div>
+              <div class="checkout-shimmer-input"></div>
+            </div>
+
+            <div class="checkout-shimmer-field">
+              <div class="checkout-shimmer-label"></div>
+              <div class="checkout-shimmer-input"></div>
+            </div>
+
+            <div class="checkout-shimmer-field">
+              <div class="checkout-shimmer-label"></div>
+              <div class="checkout-shimmer-input"></div>
+            </div>
+
+            <div class="checkout-shimmer-field">
+              <div class="checkout-shimmer-label"></div>
+              <div class="checkout-shimmer-input"></div>
+            </div>
+
+          </div>
+
+          <div class="checkout-shimmer-save-button"></div>
+
+          <div class="checkout-shimmer-payment-section">
+
+            <div class="checkout-shimmer-payment-title"></div>
+
+            <div class="checkout-shimmer-payment-option">
+
+              <div class="checkout-shimmer-radio"></div>
+
+              <div class="checkout-shimmer-payment-content">
+                <div class="checkout-shimmer-payment-name"></div>
+                <div class="checkout-shimmer-payment-text"></div>
+              </div>
+
+            </div>
+
+            <div class="checkout-shimmer-payment-option">
+
+              <div class="checkout-shimmer-radio"></div>
+
+              <div class="checkout-shimmer-payment-content">
+                <div class="checkout-shimmer-payment-name"></div>
+                <div class="checkout-shimmer-payment-text"></div>
+              </div>
+
+            </div>
+
+            <div class="checkout-shimmer-place-button"></div>
+
+          </div>
+
+        </section>
+
+        <!-- Summary shimmer -->
+
+        <aside class="checkout-shimmer-card checkout-shimmer-summary">
+
+          <div class="checkout-shimmer-summary-title"></div>
+
+          <article class="checkout-shimmer-product">
+
+            <div class="checkout-shimmer-product-image"></div>
+
+            <div class="checkout-shimmer-product-info">
+              <div class="checkout-shimmer-product-name"></div>
+              <div class="checkout-shimmer-product-quantity"></div>
+              <div class="checkout-shimmer-product-price"></div>
+            </div>
+
+          </article>
+
+          <article class="checkout-shimmer-product">
+
+            <div class="checkout-shimmer-product-image"></div>
+
+            <div class="checkout-shimmer-product-info">
+              <div class="checkout-shimmer-product-name"></div>
+              <div class="checkout-shimmer-product-quantity"></div>
+              <div class="checkout-shimmer-product-price"></div>
+            </div>
+
+          </article>
+
+          <div class="checkout-shimmer-price-section">
+
+            <div class="checkout-shimmer-price-row">
+              <div></div>
+              <div></div>
+            </div>
+
+            <div class="checkout-shimmer-price-row">
+              <div></div>
+              <div></div>
+            </div>
+
+            <div class="checkout-shimmer-price-row">
+              <div></div>
+              <div></div>
+            </div>
+
+            <div class="checkout-shimmer-divider"></div>
+
+            <div class="checkout-shimmer-total-row">
+              <div></div>
+              <div></div>
+            </div>
+
+            <div class="checkout-shimmer-savings"></div>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- =================================
+       NORMAL CHECKOUT PAGE
+  ================================= -->
+
   <main class="checkout-page">
 
     <!-- Checkout header -->
@@ -37,11 +224,13 @@
       </button>
 
       <div>
+
         <h1>Checkout</h1>
 
         <p>
           Select your delivery address and confirm your order.
         </p>
+
       </div>
 
     </header>
@@ -70,11 +259,13 @@
         <div class="delivery-heading-row">
 
           <div>
+
             <h2>Delivery Address</h2>
 
             <p>
               Choose or update your delivery address.
             </p>
+
           </div>
 
         </div>
@@ -117,9 +308,11 @@
           ></p>
 
           <p class="saved-phone-text">
+
             Phone:
 
             <strong id="savedCustomerPhone"></strong>
+
           </p>
 
           <div class="selected-address-row">
@@ -455,6 +648,11 @@
         Order Placed Successfully
       </h2>
 
+      <p
+        class="checkout-success-message"
+        id="checkoutSuccessMessage"
+      ></p>
+
       <button
         class="checkout-success-button"
         type="button"
@@ -467,89 +665,95 @@
 
   </main>
 
-  <!-- Automatically hide the header after success -->
+  <!-- Automatically hide header after success -->
 
-<script>
-  document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-      const checkoutPageHeading =
-        document.getElementById(
-          "checkoutPageHeading"
-        );
+  <script>
+    document.addEventListener(
+      "DOMContentLoaded",
+      function () {
+        const checkoutPageHeading =
+          document.getElementById(
+            "checkoutPageHeading"
+          );
 
-      const checkoutSuccess =
-        document.getElementById(
-          "checkoutSuccess"
-        );
+        const checkoutSuccess =
+          document.getElementById(
+            "checkoutSuccess"
+          );
 
-      const checkoutEmpty =
-        document.getElementById(
-          "checkoutEmpty"
-        );
+        const checkoutEmpty =
+          document.getElementById(
+            "checkoutEmpty"
+          );
 
-      if (
-        !checkoutPageHeading ||
-        !checkoutSuccess ||
-        !checkoutEmpty
-      ) {
-        return;
-      }
-
-      function updateCheckoutHeader() {
-        const successIsVisible =
-          !checkoutSuccess.hidden;
-
-        const emptyIsVisible =
-          !checkoutEmpty.hidden;
-
-        const hideHeader =
-          successIsVisible ||
-          emptyIsVisible;
-
-        checkoutPageHeading.hidden =
-          hideHeader;
-
-        document.body.classList.toggle(
-          "checkout-success-active",
-          successIsVisible
-        );
-
-        document.body.classList.toggle(
-          "checkout-empty-active",
-          emptyIsVisible
-        );
-      }
-
-      const pageStateObserver =
-        new MutationObserver(
-          updateCheckoutHeader
-        );
-
-      pageStateObserver.observe(
-        checkoutSuccess,
-        {
-          attributes: true,
-          attributeFilter: [
-            "hidden"
-          ]
+        if (
+          !checkoutPageHeading ||
+          !checkoutSuccess ||
+          !checkoutEmpty
+        ) {
+          return;
         }
-      );
 
-      pageStateObserver.observe(
-        checkoutEmpty,
-        {
-          attributes: true,
-          attributeFilter: [
-            "hidden"
-          ]
+        function updateCheckoutHeader() {
+          const successIsVisible =
+            !checkoutSuccess.hidden;
+
+          const emptyIsVisible =
+            !checkoutEmpty.hidden;
+
+          const hideHeader =
+            successIsVisible ||
+            emptyIsVisible;
+
+          checkoutPageHeading.hidden =
+            hideHeader;
+
+          document.body.classList.toggle(
+            "checkout-success-active",
+            successIsVisible
+          );
+
+          document.body.classList.toggle(
+            "checkout-empty-active",
+            emptyIsVisible
+          );
         }
-      );
 
-      updateCheckoutHeader();
-    }
-  );
-</script>
+        const pageStateObserver =
+          new MutationObserver(
+            updateCheckoutHeader
+          );
+
+        pageStateObserver.observe(
+          checkoutSuccess,
+          {
+            attributes: true,
+            attributeFilter: [
+              "hidden"
+            ]
+          }
+        );
+
+        pageStateObserver.observe(
+          checkoutEmpty,
+          {
+            attributes: true,
+            attributeFilter: [
+              "hidden"
+            ]
+          }
+        );
+
+        updateCheckoutHeader();
+      }
+    );
+  </script>
+
+  <script src="page-loader.js"></script>
+
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+  <script src="supabase-config.js"></script>
 
   <script src="checkout.js"></script>
 
