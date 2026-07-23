@@ -81,10 +81,10 @@ button {
   height: 40px;
   padding: 0;
 
-  color: #75460b;
-  background: #ffffff;
+  color:black;
+  background:white;
 
-  border: 1px solid #dfd6cb;
+ border: 1px solid #c2e9ea;
   border-radius: 50%;
 
   font-size: 25px;
@@ -123,7 +123,7 @@ button {
   padding: 26px;
 
   background: #ffffff;
-  border: 1px solid #e7e7e7;
+  border: 1px solid #c2e9ea;
   border-radius: 16px;
 
   box-shadow:
@@ -166,10 +166,10 @@ button {
   min-height: 35px;
   padding: 7px 13px;
 
-  color: #8b5a12;
-  background: #ffffff;
+  color: black;
+  background: white;
 
-  border: 1px solid #8b5a12;
+  border: 1px solid #c2f5f7;
   border-radius: 8px;
 
   font-size: 12px;
@@ -399,7 +399,7 @@ button {
 
   background: #ffffff;
 
-  border: 1px solid #dddddd;
+  border: 1px solid #c2e9ea;
   border-radius: 11px;
 
   cursor: pointer;
@@ -438,7 +438,7 @@ button {
   color: #8a4d00;
   background: #fff4df;
 
-  border: 1px solid #e8c884;
+  border: 1px solid #c2e9ea;
   border-radius: 9px;
 
   font-size: 12px;
@@ -881,6 +881,44 @@ button {
   transform: scale(0.98);
 }
 
+@media (max-width: 760px) {
+  .checkout-success-button {
+    width: 100%;
+    max-width: 240px;
+
+    min-width: 0;
+    min-height: 48px;
+
+    padding: 11px 18px;
+
+    color: green;
+    background: transparent;
+
+    border: 2px solid green;
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    
+
+    transition:
+      background 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.2s ease;
+  }
+
+  .checkout-success-button:hover {
+    background: rgba(0, 128, 0, 0.08);
+    border-color: #087c08;
+
+  }
+
+  .checkout-success-button:active {
+    transform: scale(0.98);
+  }
+}
 /* Mobile */
 
 @media (max-width: 760px) {
@@ -1064,3 +1102,655 @@ body.checkout-empty-active
     padding-bottom: 30px;
   }
 }
+/* =================================
+   FULL CHECKOUT PAGE SHIMMER
+================================= */
+
+body.page-is-loading {
+  overflow: hidden;
+}
+
+.page-shimmer-loader {
+  position: fixed;
+  inset: 0;
+
+  z-index: 999999;
+
+  width: 100%;
+  height: 100vh;
+
+  overflow: hidden;
+
+  background:
+    rgba(
+      222,
+      243,
+      248,
+      0.99
+    );
+
+  opacity: 1;
+  visibility: visible;
+
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.page-shimmer-loader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+
+  pointer-events: none;
+}
+
+/* =================================
+   COMMON SHIMMER ANIMATION
+================================= */
+
+.checkout-shimmer-back,
+.checkout-shimmer-title,
+.checkout-shimmer-subtitle,
+.checkout-shimmer-heading-title,
+.checkout-shimmer-heading-text,
+.checkout-shimmer-label,
+.checkout-shimmer-input,
+.checkout-shimmer-textarea,
+.checkout-shimmer-save-button,
+.checkout-shimmer-payment-title,
+.checkout-shimmer-radio,
+.checkout-shimmer-payment-name,
+.checkout-shimmer-payment-text,
+.checkout-shimmer-place-button,
+.checkout-shimmer-summary-title,
+.checkout-shimmer-product-image,
+.checkout-shimmer-product-name,
+.checkout-shimmer-product-quantity,
+.checkout-shimmer-product-price,
+.checkout-shimmer-price-row div,
+.checkout-shimmer-divider,
+.checkout-shimmer-total-row div,
+.checkout-shimmer-savings {
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      90deg,
+      #eadfce 20%,
+      #fffaf4 48%,
+      #eadfce 76%
+    );
+
+  background-size: 220% 100%;
+
+  animation:
+    checkout-full-page-shimmer
+    1.1s linear infinite;
+}
+
+@keyframes checkout-full-page-shimmer {
+  from {
+    background-position: 210% 0;
+  }
+
+  to {
+    background-position: -210% 0;
+  }
+}
+
+/* =================================
+   SHIMMER PAGE
+================================= */
+
+.checkout-shimmer-page {
+  width: calc(100% - 40px);
+  max-width: 1350px;
+  min-height: 100vh;
+
+  margin: 0 auto;
+  padding: 18px 0 35px;
+}
+
+/* =================================
+   SHIMMER HEADER
+================================= */
+
+.checkout-shimmer-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  min-height: 78px;
+
+  padding: 14px 18px;
+
+  background: #ffffff;
+
+  border: 1px solid #ead9c2;
+  border-radius: 16px;
+
+  box-shadow:
+    0 8px 24px
+    rgba(88, 52, 12, 0.08);
+}
+
+.checkout-shimmer-back {
+  flex: 0 0 42px;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+}
+
+.checkout-shimmer-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkout-shimmer-title {
+  width: 145px;
+  height: 27px;
+
+  border-radius: 8px;
+}
+
+.checkout-shimmer-subtitle {
+  width: 310px;
+  max-width: 60vw;
+  height: 9px;
+
+  border-radius: 8px;
+}
+
+/* =================================
+   MAIN LAYOUT
+================================= */
+
+.checkout-shimmer-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.35fr)
+    minmax(320px, 0.65fr);
+
+  gap: 22px;
+
+  margin-top: 22px;
+}
+
+.checkout-shimmer-card {
+  min-width: 0;
+
+  padding: 22px;
+
+  background: #ffffff;
+
+  border: 1px solid #ead9c2;
+  border-radius: 16px;
+
+  box-shadow:
+    0 8px 24px
+    rgba(88, 52, 12, 0.08);
+}
+
+/* =================================
+   SECTION HEADING
+================================= */
+
+.checkout-shimmer-section-heading {
+  margin-bottom: 24px;
+}
+
+.checkout-shimmer-heading-title {
+  width: 175px;
+  height: 20px;
+
+  margin-bottom: 9px;
+
+  border-radius: 8px;
+}
+
+.checkout-shimmer-heading-text {
+  width: 265px;
+  max-width: 80%;
+  height: 9px;
+
+  border-radius: 8px;
+}
+
+/* =================================
+   ADDRESS FORM
+================================= */
+
+.checkout-shimmer-form-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 17px;
+}
+
+.checkout-shimmer-field {
+  min-width: 0;
+}
+
+.checkout-shimmer-field-full {
+  grid-column: 1 / -1;
+}
+
+.checkout-shimmer-label {
+  width: 90px;
+  height: 9px;
+
+  margin-bottom: 8px;
+
+  border-radius: 8px;
+}
+
+.checkout-shimmer-input {
+  width: 100%;
+  height: 47px;
+
+  border-radius: 10px;
+}
+
+.checkout-shimmer-textarea {
+  width: 100%;
+  height: 105px;
+
+  border-radius: 10px;
+}
+
+.checkout-shimmer-save-button {
+  width: 150px;
+  height: 45px;
+
+  margin-top: 18px;
+
+  border-radius: 10px;
+}
+
+/* =================================
+   PAYMENT SHIMMER
+================================= */
+
+.checkout-shimmer-payment-section {
+  margin-top: 30px;
+  padding-top: 25px;
+
+  border-top: 1px solid #eee1cf;
+}
+
+.checkout-shimmer-payment-title {
+  width: 170px;
+  height: 19px;
+
+  margin-bottom: 17px;
+
+  border-radius: 8px;
+}
+
+.checkout-shimmer-payment-option {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  min-height: 72px;
+
+  margin-bottom: 11px;
+  padding: 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #ead9c2;
+  border-radius: 12px;
+}
+
+.checkout-shimmer-radio {
+  flex: 0 0 22px;
+
+  width: 22px;
+  height: 22px;
+
+  border-radius: 50%;
+}
+
+.checkout-shimmer-payment-content {
+  min-width: 0;
+}
+
+.checkout-shimmer-payment-name {
+  width: 145px;
+  height: 13px;
+
+  margin-bottom: 8px;
+
+  border-radius: 8px;
+}
+
+.checkout-shimmer-payment-text {
+  width: 185px;
+  height: 8px;
+
+  border-radius: 8px;
+}
+
+.checkout-shimmer-place-button {
+  width: 100%;
+  height: 49px;
+
+  margin-top: 17px;
+
+  border-radius: 11px;
+}
+
+/* =================================
+   SUMMARY SHIMMER
+================================= */
+
+.checkout-shimmer-summary {
+  align-self: start;
+}
+
+.checkout-shimmer-summary-title {
+  width: 145px;
+  height: 20px;
+
+  margin-bottom: 22px;
+
+  border-radius: 8px;
+}
+
+.checkout-shimmer-product {
+  display: grid;
+
+  grid-template-columns:
+    82px
+    minmax(0, 1fr);
+
+  align-items: center;
+  gap: 13px;
+
+  padding: 14px 0;
+
+  border-bottom: 1px solid #eee1cf;
+}
+
+.checkout-shimmer-product-image {
+  width: 82px;
+  height: 86px;
+
+  border-radius: 11px;
+}
+
+.checkout-shimmer-product-info {
+  min-width: 0;
+}
+
+.checkout-shimmer-product-name {
+  width: 82%;
+  height: 14px;
+
+  margin-bottom: 10px;
+
+  border-radius: 8px;
+}
+
+.checkout-shimmer-product-quantity {
+  width: 50%;
+  height: 8px;
+
+  margin-bottom: 10px;
+
+  border-radius: 8px;
+}
+
+.checkout-shimmer-product-price {
+  width: 38%;
+  height: 12px;
+
+  border-radius: 8px;
+}
+
+/* =================================
+   SUMMARY PRICES
+================================= */
+
+.checkout-shimmer-price-section {
+  padding-top: 22px;
+}
+
+.checkout-shimmer-price-row,
+.checkout-shimmer-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 19px;
+}
+
+.checkout-shimmer-price-row div:first-child {
+  width: 112px;
+  height: 9px;
+
+  border-radius: 8px;
+}
+
+.checkout-shimmer-price-row div:last-child {
+  width: 64px;
+  height: 9px;
+
+  border-radius: 8px;
+}
+
+.checkout-shimmer-divider {
+  width: 100%;
+  height: 1px;
+
+  margin: 5px 0 20px;
+}
+
+.checkout-shimmer-total-row div:first-child {
+  width: 125px;
+  height: 14px;
+
+  border-radius: 8px;
+}
+
+.checkout-shimmer-total-row div:last-child {
+  width: 78px;
+  height: 15px;
+
+  border-radius: 8px;
+}
+
+.checkout-shimmer-savings {
+  width: 75%;
+  height: 10px;
+
+  margin-top: 15px;
+
+  border-radius: 8px;
+}
+
+/* =================================
+   TABLET
+================================= */
+
+@media (max-width: 900px) {
+  .checkout-shimmer-page {
+    width: calc(100% - 24px);
+  }
+
+  .checkout-shimmer-layout {
+    grid-template-columns:
+      minmax(0, 1.2fr)
+      minmax(280px, 0.8fr);
+
+    gap: 15px;
+  }
+
+  .checkout-shimmer-card {
+    padding: 18px;
+  }
+}
+
+/* =================================
+   MOBILE
+================================= */
+
+@media (max-width: 700px) {
+  .page-shimmer-loader {
+    height: 100dvh;
+  }
+
+  .checkout-shimmer-page {
+    width: 100%;
+    min-height: 100dvh;
+
+    padding: 0 9px 25px;
+  }
+
+  .checkout-shimmer-header {
+    min-height: 66px;
+
+    margin: 0 -9px;
+    padding: 10px 12px;
+
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-radius: 0;
+  }
+
+  .checkout-shimmer-back {
+    flex-basis: 36px;
+
+    width: 36px;
+    height: 36px;
+  }
+
+  .checkout-shimmer-title {
+    width: 105px;
+    height: 19px;
+  }
+
+  .checkout-shimmer-subtitle {
+    width: 210px;
+    max-width: 65vw;
+    height: 7px;
+  }
+
+  .checkout-shimmer-layout {
+    display: block;
+
+    margin-top: 10px;
+  }
+
+  .checkout-shimmer-card {
+    padding: 15px;
+
+    border-radius: 12px;
+  }
+
+  .checkout-shimmer-summary {
+    margin-top: 10px;
+  }
+
+  .checkout-shimmer-heading-title {
+    width: 145px;
+    height: 17px;
+  }
+
+  .checkout-shimmer-heading-text {
+    width: 210px;
+    height: 7px;
+  }
+
+  .checkout-shimmer-form-grid {
+    grid-template-columns: 1fr;
+
+    gap: 13px;
+  }
+
+  .checkout-shimmer-field-full {
+    grid-column: auto;
+  }
+
+  .checkout-shimmer-label {
+    width: 75px;
+    height: 7px;
+  }
+
+  .checkout-shimmer-input {
+    height: 43px;
+  }
+
+  .checkout-shimmer-textarea {
+    height: 90px;
+  }
+
+  .checkout-shimmer-save-button {
+    width: 135px;
+    height: 42px;
+  }
+
+  .checkout-shimmer-payment-section {
+    margin-top: 24px;
+    padding-top: 20px;
+  }
+
+  .checkout-shimmer-payment-option {
+    min-height: 65px;
+
+    padding: 12px;
+  }
+
+  .checkout-shimmer-payment-name {
+    width: 125px;
+    height: 11px;
+  }
+
+  .checkout-shimmer-payment-text {
+    width: 165px;
+    height: 7px;
+  }
+
+  .checkout-shimmer-place-button {
+    height: 47px;
+  }
+
+  .checkout-shimmer-product {
+    grid-template-columns:
+      70px
+      minmax(0, 1fr);
+  }
+
+  .checkout-shimmer-product-image {
+    width: 70px;
+    height: 74px;
+  }
+
+  .checkout-shimmer-product-name {
+    height: 11px;
+  }
+
+  .checkout-shimmer-product-quantity {
+    height: 7px;
+  }
+
+  .checkout-shimmer-product-price {
+    height: 10px;
+  }
+}
+
+
