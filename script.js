@@ -181,45 +181,592 @@ document.addEventListener(
       }
     );
 
-    /* =================================
-       HOMEPAGE SEARCH
-    ================================= */
+/* =================================
+   LIVE HOMEPAGE PRODUCT SEARCH
+================================= */
+
+const searchSuggestions =
+  document.getElementById(
+    "searchSuggestions"
+  );
+
+const searchSuggestionsList =
+  document.getElementById(
+    "searchSuggestionsList"
+  );
+
+const searchSuggestionsMessage =
+  document.getElementById(
+    "searchSuggestionsMessage"
+  );
+
+let searchDelayTimer = null;
+
+let currentSearchRequest = 0;
+
+/* Clean text before displaying it */
+
+function escapeSearchHTML(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+/* Convert Supabase image path into public URL */
+
+function getSearchProductImageUrl(
+  imageValue
+) {
+  const value =
+    String(imageValue || "").trim();
+
+  if (!value) {
+    return "images/image-placeholder.png";
+  }
+
+  if (
+    value.startsWith("https://") ||
+    value.startsWith("http://")
+  ) {
+    return value;
+  }
+
+  if (
+    typeof supabaseClient ===
+    "undefined"
+  ) {
+    return value;
+  }
+
+  const cleanStoragePath =
+    value
+      .replace(
+        /^product-images\//,
+        ""
+      )
+      .replace(/^\/+/, "");
+
+  const { data } =
+    supabaseClient.storage
+      .from("product-images")
+      .getPublicUrl(
+        cleanStoragePath
+      );
+
+  return (
+    data?.publicUrl ||
+    "images/image-placeholder.png"
+  );
+}
+
+/* Open search dropdown */
+
+function openSearchSuggestions() {
+  if (
+    !searchSuggestions ||
+    !searchInput
+  ) {
+    return;
+  }
+
+  searchSuggestions.hidden =
+    false;
+
+  searchInput.setAttribute(
+    "aria-expanded",
+    "true"
+  );
+}
+
+/* Close search dropdown */
+
+function closeSearchSuggestions() {
+  if (
+    !searchSuggestions ||
+    !searchInput
+  ) {
+    return;
+  }
+
+  searchSuggestions.hidden =
+    true;
+
+  searchInput.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+}
+
+/* Show loading or error message */
+
+function showSearchSuggestionMessage(
+  message,
+  isError = false
+) {
+  if (searchSuggestionsList) {
+    searchSuggestionsList.innerHTML =
+      "";
+  }
+
+  if (!searchSuggestionsMessage) {
+    return;
+  }
+
+  searchSuggestionsMessage.textContent =
+    message || "";
+
+  searchSuggestionsMessage.classList
+    .toggle(
+      "error",
+      Boolean(isError)
+    );
+}
+
+/* Render search results */
+
+function renderSearchSuggestions(
+  products
+) {
+  if (
+    !searchSuggestionsList ||
+    !searchSuggestionsMessage
+  ) {
+    return;
+  }
+
+  searchSuggestionsList.innerHTML =
+    "";
+
+  searchSuggestionsMessage.textContent =
+    "";
+
+  searchSuggestionsMessage.classList
+    .remove("error");
+
+  if (
+    !Array.isArray(products) ||
+    products.length === 0
+  ) {
+    showSearchSuggestionMessage(
+      "No products found."
+    );
+
+    return;
+  }
+
+  products.forEach(
+    function (product) {
+      const productId =
+        product.id || "";
+
+      const productName =
+        product.name ||
+        "Brass Product";
+
+      const categoryName =
+        product.category_name ||
+        product.category ||
+        "Ajjaram Brass";
+
+      const productImage =
+        getSearchProductImageUrl(
+          product.image_url
+        );
+
+      const searchResultButton =
+        document.createElement(
+          "button"
+        );
+
+      searchResultButton.type =
+        "button";
+
+      searchResultButton.className =
+        "search-suggestion-item";
+
+      searchResultButton.innerHTML = `
+        <span class="search-suggestion-image">
+          <img
+            src="${escapeSearchHTML(
+              productImage
+            )}"
+            alt="${escapeSearchHTML(
+              productName
+            )}"
+            loading="lazy"
+          >
+        </span>
+
+        <span class="search-suggestion-content">
+
+          <strong>
+            ${escapeSearchHTML(
+              productName
+            )}
+          </strong>
+
+          <small>
+            ${escapeSearchHTML(
+              categoryName
+            )}
+          </small>
+
+        </span>
+      `;
+
+      const resultImage =
+        searchResultButton
+          .querySelector("img");
+
+      resultImage?.addEventListener(
+        "error",
+        function () {
+          resultImage.src =
+            "images/image-placeholder.png";
+        },
+        {
+          once: true
+        }
+      );
+
+      searchResultButton
+        .addEventListener(
+          "click",
+          function () {
+            if (!productId) {
+              return;
+            }
+
+            window.location.href =
+              `product-full.html?id=${encodeURIComponent(
+                productId
+              )}`;
+          }
+        );
+
+      searchSuggestionsList
+        .appendChild(
+          searchResultButton
+        );
+    }
+  );
+}
+
+/* Search products in Supabase */
+
+async function searchHomepageProducts(
+  searchValue
+) {
+  const query =
+    String(searchValue || "")
+      .trim();
+
+  if (query.length < 1) {
+    closeSearchSuggestions();
+
+    if (searchSuggestionsList) {
+      searchSuggestionsList.innerHTML =
+        "";
+    }
+
+    return;
+  }
+
+  openSearchSuggestions();
+
+  if (
+    typeof supabaseClient ===
+    "undefined"
+  ) {
+    showSearchSuggestionMessage(
+      "Search is unavailable.",
+      true
+    );
+
+    return;
+  }
+
+  const requestNumber =
+    ++currentSearchRequest;
+
+  showSearchSuggestionMessage(
+    "Searching..."
+  );
+
+  try {
+    const safeSearchQuery =
+      query
+        .replaceAll("%", "")
+        .replaceAll(",", " ")
+        .trim();
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("products")
+        .select(
+          `
+            id,
+            name,
+            category,
+            category_name,
+            image_url,
+            is_active
+          `
+        )
+        .eq(
+          "is_active",
+          true
+        )
+        .or(
+          `name.ilike.%${safeSearchQuery}%,category_name.ilike.%${safeSearchQuery}%`
+        )
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        )
+        .limit(10);
+
+    /*
+     * Ignore an older response if the
+     * user typed another search.
+     */
 
     if (
-      searchForm &&
-      searchInput
+      requestNumber !==
+      currentSearchRequest
     ) {
-      searchForm.addEventListener(
-        "submit",
-        function (event) {
+      return;
+    }
+
+    if (error) {
+      throw error;
+    }
+
+    renderSearchSuggestions(
+      data || []
+    );
+  } catch (error) {
+    console.error(
+      "Live product search failed:",
+      error
+    );
+
+    if (
+      requestNumber !==
+      currentSearchRequest
+    ) {
+      return;
+    }
+
+    showSearchSuggestionMessage(
+      "Unable to search products.",
+      true
+    );
+  }
+}
+
+/* Search while typing */
+
+if (
+  searchForm &&
+  searchInput
+) {
+  searchInput.addEventListener(
+    "input",
+    function () {
+      const searchValue =
+        searchInput.value.trim();
+
+      window.clearTimeout(
+        searchDelayTimer
+      );
+
+      if (!searchValue) {
+        closeSearchSuggestions();
+
+        if (searchSuggestionsList) {
+          searchSuggestionsList
+            .innerHTML = "";
+        }
+
+        if (searchSuggestionsMessage) {
+          searchSuggestionsMessage
+            .textContent = "";
+        }
+
+        return;
+      }
+
+      openSearchSuggestions();
+
+      showSearchSuggestionMessage(
+        "Searching..."
+      );
+
+      searchDelayTimer =
+        window.setTimeout(
+          function () {
+            searchHomepageProducts(
+              searchValue
+            );
+          },
+          250
+        );
+    }
+  );
+
+  /*
+   * Enter opens the full products page.
+   */
+
+  searchForm.addEventListener(
+    "submit",
+    function (event) {
+      event.preventDefault();
+
+      const searchValue =
+        searchInput.value.trim();
+
+      if (!searchValue) {
+        searchInput.focus();
+
+        return;
+      }
+
+      window.location.href =
+        "products.html?search=" +
+        encodeURIComponent(
+          searchValue
+        );
+    }
+  );
+
+  searchInput.addEventListener(
+    "focus",
+    function () {
+      if (
+        searchInput.value.trim()
+      ) {
+        openSearchSuggestions();
+      }
+    }
+  );
+
+  searchInput.addEventListener(
+    "keydown",
+    function (event) {
+      if (
+        event.key === "Escape"
+      ) {
+        closeSearchSuggestions();
+
+        searchInput.value = "";
+        searchInput.focus();
+      }
+
+      if (
+        event.key === "ArrowDown"
+      ) {
+        const firstResult =
+          searchSuggestionsList
+            ?.querySelector(
+              ".search-suggestion-item"
+            );
+
+        if (firstResult) {
           event.preventDefault();
 
-          const value =
-            searchInput.value.trim();
-
-          if (!value) {
-            searchInput.focus();
-            return;
-          }
-
-          window.location.href =
-            "products.html?search=" +
-            encodeURIComponent(value);
+          firstResult.focus();
         }
-      );
-
-      searchInput.addEventListener(
-        "keydown",
-        function (event) {
-          if (
-            event.key === "Escape"
-          ) {
-            searchInput.value = "";
-            searchInput.focus();
-          }
-        }
-      );
+      }
     }
+  );
+}
+
+/* Keyboard navigation inside results */
+
+searchSuggestionsList
+  ?.addEventListener(
+    "keydown",
+    function (event) {
+      const resultItems =
+        Array.from(
+          searchSuggestionsList
+            .querySelectorAll(
+              ".search-suggestion-item"
+            )
+        );
+
+      const currentIndex =
+        resultItems.indexOf(
+          document.activeElement
+        );
+
+      if (
+        event.key === "ArrowDown"
+      ) {
+        event.preventDefault();
+
+        const nextIndex =
+          Math.min(
+            currentIndex + 1,
+            resultItems.length - 1
+          );
+
+        resultItems[
+          nextIndex
+        ]?.focus();
+      }
+
+      if (
+        event.key === "ArrowUp"
+      ) {
+        event.preventDefault();
+
+        if (currentIndex <= 0) {
+          searchInput?.focus();
+
+          return;
+        }
+
+        resultItems[
+          currentIndex - 1
+        ]?.focus();
+      }
+
+      if (
+        event.key === "Escape"
+      ) {
+        closeSearchSuggestions();
+
+        searchInput?.focus();
+      }
+    }
+  );
+
+/* Close when clicking outside */
+
+document.addEventListener(
+  "click",
+  function (event) {
+    const searchWrapper =
+      event.target.closest(
+        ".header-search-wrapper"
+      );
+
+    if (!searchWrapper) {
+      closeSearchSuggestions();
+    }
+  }
+);
 
     /* =================================
        PRODUCT CARD NAVIGATION
