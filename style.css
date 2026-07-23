@@ -309,7 +309,7 @@ body {
   min-width: 0;
   overflow: hidden;
   background: #ffffff;
-  border: 1px solid #ececec;
+  border: 1px solid #c2e9ea;
   border-radius: 12px;
   box-shadow: 0 4px 14px rgb(0 0 0 / 6%);
   transition:
@@ -840,7 +840,7 @@ body {
 
   color: #6b470f;
   background: #fff7e8;
-  border: 1px solid #ead5ad;
+  border: 1px solid #c2e9ea;
   border-radius: 8px;
 
   font-size: 14px;
@@ -1601,7 +1601,7 @@ body.profile-sheet-open {
 
   background: #ffffff;
 
-  border: 1px solid #e4d5c0;
+  border: 1px solid #c2e9ea;
   border-bottom: none;
   border-radius: 24px 24px 0 0;
 
@@ -1671,10 +1671,10 @@ body.profile-sheet-open {
   height: 38px;
   padding: 0;
 
-  color: #674113;
-  background: #faf3e9;
+  color: black;
+  background: white;
 
-  border: 1px solid #e4d5c0;
+  border: 1px solid #c2e9ea;
   border-radius: 50%;
 
   font-size: 24px;
@@ -1747,7 +1747,7 @@ body.profile-sheet-open {
 
   background: #fbf8f4;
 
-  border: 1px solid #e9dece;
+  border: 1px solid #c2e9ea;
   border-radius: 14px;
 
   text-align: left;
@@ -1809,7 +1809,7 @@ body.profile-sheet-open {
   color: #b42318;
   background: #fff6f5;
 
-  border: 1px solid #f0aaa4;
+  border: 1px solid #c2e9ea;
 }
 
 .profile-logout-button:hover {
@@ -1823,7 +1823,7 @@ body.profile-sheet-open {
   color: #ffffff;
   background: #815318;
 
-  border: 1px solid #815318;
+  border: 1px solid #186c81;
 }
 
 .profile-sheet-message {
@@ -1896,4 +1896,297 @@ body.profile-sheet-open {
   font-size: 16px;
   font-weight: 900;
   letter-spacing: 2px;
+}
+/* =================================
+   LIVE PRODUCT SEARCH
+================================= */
+
+.header-search-wrapper {
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+
+  font-family: emoji;
+}
+
+/* Search form font */
+
+.header-search-wrapper .search-form,
+.header-search-wrapper .search-form input,
+.header-search-wrapper .search-form button {
+  font-family: emoji;
+}
+
+/* Dropdown container */
+
+.search-suggestions {
+  position: absolute;
+
+  top: calc(100% + 8px);
+  right: 0;
+  left: 0;
+
+  z-index: 5000;
+
+  width: 100%;
+  max-height: 430px;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  color: #000000;
+  background: #ffffff;
+
+  border: 1px solid #c2e9ea;
+  border-radius: 15px;
+
+  box-shadow:
+    0 14px 35px
+    rgba(0, 0, 0, 0.18);
+
+  font-family: emoji;
+
+  scrollbar-width: thin;
+  scrollbar-color:
+    #8f8f8f
+    #f4f4f4;
+}
+
+.search-suggestions::-webkit-scrollbar {
+  width: 7px;
+}
+
+.search-suggestions::-webkit-scrollbar-track {
+  background: #f4f4f4;
+  border-radius: 20px;
+}
+
+.search-suggestions::-webkit-scrollbar-thumb {
+  background: #8f8f8f;
+  border-radius: 20px;
+}
+
+/* Search result list */
+
+.search-suggestions-list {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+
+  font-family: emoji;
+}
+
+/* Individual product result */
+
+.search-suggestion-item {
+  display: grid;
+
+  grid-template-columns:
+    62px
+    minmax(0, 1fr);
+
+  align-items: center;
+  gap: 13px;
+
+  width: 100%;
+  min-height: 78px;
+
+  padding: 9px 13px;
+
+  color: #000000;
+  background: #ffffff;
+
+  border: none;
+  border-bottom: 1px solid #eeeeee;
+
+  font-family: emoji;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease;
+}
+
+.search-suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.search-suggestion-item:hover,
+.search-suggestion-item:focus-visible {
+  background: #f8f8f8;
+  outline: none;
+}
+
+/* Product thumbnail */
+
+.search-suggestion-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 62px;
+  height: 62px;
+
+  overflow: hidden;
+
+  background: #f5efe8;
+  border-radius: 10px;
+}
+
+.search-suggestion-image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  padding: 3px;
+
+  object-fit: contain;
+}
+
+/* Product text */
+
+.search-suggestion-content {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  gap: 5px;
+
+  font-family: emoji;
+}
+
+.search-suggestion-content strong {
+  overflow: hidden;
+
+  color: #000000;
+
+  font-family: emoji;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.25;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-suggestion-content small {
+  overflow: hidden;
+
+  color: #8b560f;
+
+  font-family: emoji;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Loading, empty and error message */
+
+.search-suggestions-message {
+  margin: 0;
+  padding: 18px 14px;
+
+  color: #555555;
+
+  font-family: emoji;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.search-suggestions-message:empty {
+  display: none;
+}
+
+.search-suggestions-message.error {
+  color: #b42318;
+}
+
+/* =================================
+   MOBILE LIVE SEARCH
+================================= */
+
+@media (max-width: 700px) {
+  .header-search-wrapper {
+    grid-column: 1 / -1;
+    grid-row: 2;
+
+    width: 100%;
+
+    font-family: emoji;
+  }
+
+  .header-search-wrapper .search-form {
+    grid-column: auto;
+    grid-row: auto;
+
+    font-family: emoji;
+  }
+
+  .header-search-wrapper
+  .search-form input,
+  .header-search-wrapper
+  .search-form button {
+    font-family: emoji;
+  }
+
+  .search-suggestions {
+    top: calc(100% + 7px);
+
+    max-height:
+      min(
+        440px,
+        calc(100vh - 150px)
+      );
+
+    border-radius: 14px;
+
+    font-family: emoji;
+  }
+
+  .search-suggestion-item {
+    grid-template-columns:
+      60px
+      minmax(0, 1fr);
+
+    gap: 12px;
+
+    min-height: 78px;
+
+    padding: 9px 10px;
+
+    font-family: emoji;
+  }
+
+  .search-suggestion-image {
+    width: 60px;
+    height: 60px;
+
+    border-radius: 9px;
+  }
+
+  .search-suggestion-content,
+  .search-suggestion-content strong,
+  .search-suggestion-content small {
+    font-family: emoji;
+  }
+
+  .search-suggestion-content strong {
+    font-size: 14px;
+  }
+
+  .search-suggestion-content small {
+    font-size: 12px;
+  }
+
+  .search-suggestions-message {
+    font-family: emoji;
+  }
 }
