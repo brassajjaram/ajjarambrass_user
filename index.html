@@ -23,22 +23,62 @@
   <span class="logo-sub">Brass &amp; Sources</span>
 </a>
 
-      <!-- Search Bar -->
-      <form class="search-form" id="searchForm">
-        <input
-          type="search"
-          id="searchInput"
-          placeholder="Search..."
-          aria-label="Search"
-        >
+     <!-- Live product search -->
 
-        <button type="submit" aria-label="Search">
-          <svg viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="7"></circle>
-            <path d="M20 20L16.5 16.5"></path>
-          </svg>
-        </button>
-      </form>
+<div class="header-search-wrapper">
+
+  <form
+    class="search-form"
+    id="searchForm"
+    autocomplete="off"
+  >
+    <input
+      type="search"
+      id="searchInput"
+      placeholder="Search products..."
+      aria-label="Search products"
+      aria-controls="searchSuggestions"
+      aria-expanded="false"
+    >
+
+    <button
+      type="submit"
+      aria-label="Search"
+    >
+      <svg viewBox="0 0 24 24">
+        <circle
+          cx="11"
+          cy="11"
+          r="7"
+        ></circle>
+
+        <path
+          d="M20 20L16.5 16.5"
+        ></path>
+      </svg>
+    </button>
+  </form>
+
+  <!-- Live search dropdown -->
+
+  <div
+    class="search-suggestions"
+    id="searchSuggestions"
+    hidden
+  >
+    <div
+      class="search-suggestions-list"
+      id="searchSuggestionsList"
+    ></div>
+
+    <p
+      class="search-suggestions-message"
+      id="searchSuggestionsMessage"
+      aria-live="polite"
+    ></p>
+  </div>
+
+</div>
 
       <!-- Profile Icon -->
       <button
@@ -335,7 +375,6 @@
 </section>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
-
 <script src="script.js"></script>
 <script src="index-products.js"></script>
 </body>
