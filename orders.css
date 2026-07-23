@@ -1967,3 +1967,337 @@ body.page-is-loading {
     height: 62px;
   }
 }
+/* =================================
+   ORDER TRACKING
+================================= */
+
+.order-tracking-section {
+  margin-bottom: 18px;
+  padding: 20px;
+
+  background: #ffffff;
+
+  border: 1px solid #ead9c2;
+  border-radius: 15px;
+
+  box-shadow:
+    0 6px 18px
+    rgba(67, 39, 6, 0.06);
+}
+
+.order-tracking-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+
+  margin-bottom: 22px;
+}
+
+.order-tracking-label {
+  margin: 0 0 4px;
+
+  color: #9a621c;
+
+  font-family: emoji;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.order-tracking-heading h2 {
+  margin: 0;
+
+  color: #000000;
+
+  font-family: emoji;
+  font-size: 19px;
+}
+
+.order-tracking-current-status {
+  flex: 0 0 auto;
+
+  max-width: 180px;
+
+  padding: 7px 11px;
+
+  color: #ffffff;
+  background: #15934d;
+
+  border-radius: 20px;
+
+  font-family: emoji;
+  font-size: 9px;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* Timeline */
+
+.order-tracking-timeline {
+  position: relative;
+}
+
+.order-tracking-step {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 12px;
+
+  min-height: 82px;
+
+  opacity: 0.42;
+}
+
+/* Vertical connecting line */
+
+.order-tracking-step:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+
+  top: 34px;
+  bottom: 0;
+  left: 17px;
+
+  width: 3px;
+
+  background: #dedede;
+
+  border-radius: 10px;
+}
+
+.order-tracking-marker {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  justify-content: center;
+}
+
+.order-tracking-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  color: #777777;
+  background: #eeeeee;
+
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 1px
+    #dddddd;
+
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.order-tracking-step-content {
+  min-width: 0;
+
+  padding: 2px 0 19px;
+}
+
+.order-tracking-step-content strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #000000;
+
+  font-family: emoji;
+  font-size: 13px;
+}
+
+.order-tracking-step-content p {
+  margin: 0 0 5px;
+
+  color: #666666;
+
+  font-family: emoji;
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.order-tracking-date {
+  display: block;
+
+  min-height: 13px;
+
+  color: #8b560f;
+
+  font-family: emoji;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+/* Completed steps */
+
+.order-tracking-step.is-completed {
+  opacity: 1;
+}
+
+.order-tracking-step.is-completed
+.order-tracking-icon {
+  color: #ffffff;
+  background: #15934d;
+
+  box-shadow:
+    0 0 0 1px
+    #15934d;
+}
+
+.order-tracking-step.is-completed:not(:last-child)::after {
+  background: #15934d;
+}
+
+/* Current step */
+
+.order-tracking-step.is-current {
+  opacity: 1;
+}
+
+.order-tracking-step.is-current
+.order-tracking-icon {
+  color: #ffffff;
+  background: #15934d;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(21, 147, 77, 0.14);
+}
+
+.order-tracking-step.is-current
+.order-tracking-step-content strong {
+  color: #15934d;
+}
+
+/* Cancelled order */
+
+.order-tracking-section.is-cancelled
+.order-tracking-current-status {
+  background: #b42318;
+}
+
+.order-tracking-cancelled {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  padding: 16px;
+
+  color: #b42318;
+  background: #fff4f3;
+
+  border: 1px solid #efc4c0;
+  border-radius: 12px;
+}
+
+.order-tracking-cancelled-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 40px;
+
+  width: 40px;
+  height: 40px;
+
+  color: #ffffff;
+  background: #b42318;
+
+  border-radius: 50%;
+
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.order-tracking-cancelled strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #b42318;
+
+  font-size: 13px;
+}
+
+.order-tracking-cancelled p {
+  margin: 0;
+
+  color: #6e2d29;
+
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* =================================
+   MOBILE ORDER TRACKING
+================================= */
+
+@media (max-width: 700px) {
+  .order-tracking-section {
+    margin-bottom: 12px;
+    padding: 15px;
+
+    border-radius: 12px;
+  }
+
+  .order-tracking-heading {
+    align-items: center;
+
+    margin-bottom: 18px;
+  }
+
+  .order-tracking-heading h2 {
+    font-size: 17px;
+  }
+
+  .order-tracking-current-status {
+    max-width: 135px;
+
+    padding: 6px 9px;
+
+    font-size: 8px;
+  }
+
+  .order-tracking-step {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 10px;
+
+    min-height: 76px;
+  }
+
+  .order-tracking-step:not(:last-child)::after {
+    top: 31px;
+    left: 15px;
+
+    width: 2px;
+  }
+
+  .order-tracking-icon {
+    width: 32px;
+    height: 32px;
+
+    font-size: 13px;
+  }
+
+  .order-tracking-step-content strong {
+    font-size: 12px;
+  }
+
+  .order-tracking-step-content p {
+    font-size: 9px;
+  }
+
+  .order-tracking-date {
+    font-size: 8px;
+  }
+}
