@@ -58,7 +58,7 @@ button {
   overflow: hidden;
 
   background: #ffffff;
-  border: 1px solid #eee6dc;
+  border: 1px solid #c2e9ea;
   border-radius: 18px;
 
   box-shadow: 0 5px 20px rgba(67, 39, 6, 0.06);
@@ -150,7 +150,7 @@ button {
   padding: 30px;
 
   background: #ffffff;
-  border: 1px solid #eee6dc;
+  border: 1px solid #c2e9ea;
   border-radius: 18px;
 
   box-shadow: 0 5px 20px rgba(67, 39, 6, 0.06);
@@ -166,7 +166,7 @@ button {
 .product-category {
   margin: 0 0 6px;
 
-  color: #9a651d;
+  color: maroon;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -290,9 +290,9 @@ button {
   min-height: 105px;
   padding: 12px 8px;
 
-  color: #292826;
+  color: green;
   background: #ffffff;
-  border: 1px solid #ebe5dc;
+ border: 1px solid #c2e9ea;
   border-radius: 13px;
 
   font-size: 13px;
@@ -766,7 +766,7 @@ button {
     margin: 0;
 
     background: #ffffff;
-    border: 1px solid #eee6dc;
+    border: 1px solid #c2e9ea;
     border-radius: 18px;
 
     box-shadow:
@@ -807,7 +807,7 @@ button {
     padding: 28px;
 
     background: #ffffff;
-    border: 1px solid #eee6dc;
+    border: 1px solid #c2e9ea;
     border-radius: 18px;
 
     box-shadow:
@@ -841,7 +841,7 @@ button {
     padding: 26px;
 
     background: #ffffff;
-    border: 1px solid #eee6dc;
+    border: 1px solid #c2e9ea;
     border-radius: 18px;
 
     box-shadow:
@@ -1402,7 +1402,7 @@ body {
   color: #000000;
   background: rgba(255, 255, 255, 0.95);
 
-  border: 1px solid #d8d8d8;
+  border: 1px solid #c2e9ea;
   border-radius: 50%;
 
   box-shadow:
@@ -1413,7 +1413,7 @@ body {
 /* Keep the image card clean */
 
 .product-slider {
-  background: #ffffff !important;
+  background: #fbe4d9!important;
 }
 
 /* Bottom bar stays transparent */
@@ -1468,10 +1468,10 @@ body {
   height: 42px;
   padding: 0;
 
-  color: #75460b;
-  background: rgba(255, 255, 255, 0.96);
+  color:black;
+  background: white;
 
-  border: 1px solid #e5d8c8;
+  border: 1px solid #c2e9ea;
   border-radius: 50%;
 
   font-size: 26px;
@@ -1491,9 +1491,8 @@ body {
 }
 
 .product-close-button:hover {
-  color: #ffffff;
-  background: #75460b;
-  border-color: #75460b;
+  
+
   transform: scale(1.05);
 }
 
@@ -1545,7 +1544,7 @@ body {
   margin: 0;
 
   background: #ffffff;
-  border: 1px solid #eadfce;
+  border: 1px solid #c2e9ea;
   border-radius: 20px;
 
   box-shadow:
@@ -1665,7 +1664,7 @@ body {
   overflow: hidden;
 
   background: #ffffff;
-  border: 1px solid #eadfce;
+  border: 1px solid #c2e9ea;
   border-radius: 22px;
 
   box-shadow:
@@ -1714,7 +1713,7 @@ body {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color:
-    rgba(139, 90, 18, 0.4)
+    rgb(183, 229, 241)
     transparent;
 }
 
@@ -1752,9 +1751,7 @@ body {
 
   background: #ffffff;
 
-  border:
-    1px solid
-    #eadfce;
+  border: 1px solid #c2e9ea;
 
   border-radius: 22px;
 
@@ -1846,8 +1843,7 @@ body {
     );
 
   border-top:
-    1px solid
-    #eadfce;
+     1px solid #c2e9ea;
 
   box-shadow:
     0 -8px 25px
@@ -1927,12 +1923,82 @@ body {
 }
 @media (max-width: 900px) {
   .product-large-image {
-    height: 36vh;
-    min-height: 260px;
-    max-height: 320px;
+    height: 42vh;
+    min-height: 300px;
+    max-height: 360px;
   }
 
   .product-slide-image {
-    padding: 24px 20px 48px;
+    padding: 28px 24px 55px;
   }
+}
+/* =================================
+   PRODUCT DETAILS INSIDE TOP CARD
+================================= */
+
+.product-details-inline {
+  margin-top: 26px;
+  padding-top: 24px;
+
+  border-top:1px solid #c2e9ea;
+}
+
+.product-details-inline h2 {
+  margin: 0 0 14px;
+
+  color: #111111;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.product-details-inline
+.product-description {
+  margin: 0;
+
+  color: #333333;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* Add space between details and benefits */
+
+.product-details-inline
++ .product-benefits {
+  margin-top: 26px;
+}
+
+/* Remove old separate details-card styling */
+
+.product-details-block {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .product-details-inline {
+    margin-top: 20px;
+    padding-top: 18px;
+  }
+
+  .product-details-inline h2 {
+    font-size: 20px;
+  }
+
+  .product-details-inline
+  .product-description {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .product-details-inline
+  + .product-benefits {
+    margin-top: 20px;
+  }
+}
+.benefit-icon-image {
+  display: block;
+
+  width: 34px;
+  height: 34px;
+
+  object-fit: contain;
 }
