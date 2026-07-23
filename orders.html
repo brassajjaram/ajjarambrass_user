@@ -512,6 +512,212 @@
           </p>
 
         </section>
+  <!-- Order tracking -->
+
+<section
+  class="order-tracking-section"
+  id="orderTrackingSection"
+>
+
+  <div class="order-tracking-heading">
+
+    <div>
+      <p class="order-tracking-label">
+        Live Status
+      </p>
+
+      <h2>Order Tracking</h2>
+    </div>
+
+    <span
+      class="order-tracking-current-status"
+      id="orderTrackingCurrentStatus"
+    >
+      Order Placed
+    </span>
+
+  </div>
+
+  <div
+    class="order-tracking-timeline"
+    id="orderTrackingTimeline"
+  >
+
+    <!-- Order placed -->
+
+    <div
+      class="order-tracking-step"
+      data-tracking-step="1"
+    >
+
+      <div class="order-tracking-marker">
+
+        <span class="order-tracking-icon">
+          ✓
+        </span>
+
+      </div>
+
+      <div class="order-tracking-step-content">
+
+        <strong>Order Placed</strong>
+
+        <p>
+          Your order has been placed successfully.
+        </p>
+
+        <span
+          class="order-tracking-date"
+          id="trackingPlacedDate"
+        ></span>
+
+      </div>
+
+    </div>
+
+    <!-- Confirmed -->
+
+    <div
+      class="order-tracking-step"
+      data-tracking-step="2"
+    >
+
+      <div class="order-tracking-marker">
+
+        <span class="order-tracking-icon">
+          ✓
+        </span>
+
+      </div>
+
+      <div class="order-tracking-step-content">
+
+        <strong>Order Confirmed</strong>
+
+        <p>
+          Ajjaram Brass has confirmed your order.
+        </p>
+
+        <span class="order-tracking-date"></span>
+
+      </div>
+
+    </div>
+
+    <!-- Shipped -->
+
+    <div
+      class="order-tracking-step"
+      data-tracking-step="3"
+    >
+
+      <div class="order-tracking-marker">
+
+        <span class="order-tracking-icon">
+          ✓
+        </span>
+
+      </div>
+
+      <div class="order-tracking-step-content">
+
+        <strong>Shipped</strong>
+
+        <p>
+          Your order has left our facility.
+        </p>
+
+        <span class="order-tracking-date"></span>
+
+      </div>
+
+    </div>
+
+    <!-- Out for delivery -->
+
+    <div
+      class="order-tracking-step"
+      data-tracking-step="4"
+    >
+
+      <div class="order-tracking-marker">
+
+        <span class="order-tracking-icon">
+          ✓
+        </span>
+
+      </div>
+
+      <div class="order-tracking-step-content">
+
+        <strong>Out for Delivery</strong>
+
+        <p>
+          Your order is on the way to you.
+        </p>
+
+        <span class="order-tracking-date"></span>
+
+      </div>
+
+    </div>
+
+    <!-- Delivered -->
+
+    <div
+      class="order-tracking-step"
+      data-tracking-step="5"
+    >
+
+      <div class="order-tracking-marker">
+
+        <span class="order-tracking-icon">
+          ✓
+        </span>
+
+      </div>
+
+      <div class="order-tracking-step-content">
+
+        <strong>Delivered</strong>
+
+        <p>
+          Your order has been delivered successfully.
+        </p>
+
+        <span class="order-tracking-date"></span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Cancelled tracking message -->
+
+  <div
+    class="order-tracking-cancelled"
+    id="orderTrackingCancelled"
+    hidden
+  >
+
+    <div class="order-tracking-cancelled-icon">
+      ×
+    </div>
+
+    <div>
+
+      <strong>Order Cancelled</strong>
+
+      <p id="orderTrackingCancelledReason">
+        This order has been cancelled.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
 
         <!-- Delivery address -->
 
