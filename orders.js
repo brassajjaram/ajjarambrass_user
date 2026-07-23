@@ -216,6 +216,45 @@ document.addEventListener(
       );
 
     /* =================================
+       ORDER TRACKING ELEMENTS
+    ================================= */
+
+    const orderTrackingSection =
+      document.getElementById(
+        "orderTrackingSection"
+      );
+
+    const orderTrackingTimeline =
+      document.getElementById(
+        "orderTrackingTimeline"
+      );
+
+    const orderTrackingCurrentStatus =
+      document.getElementById(
+        "orderTrackingCurrentStatus"
+      );
+
+    const orderTrackingCancelled =
+      document.getElementById(
+        "orderTrackingCancelled"
+      );
+
+    const orderTrackingCancelledReason =
+      document.getElementById(
+        "orderTrackingCancelledReason"
+      );
+
+    const trackingPlacedDate =
+      document.getElementById(
+        "trackingPlacedDate"
+      );
+
+    const orderTrackingSteps =
+      document.querySelectorAll(
+        ".order-tracking-step"
+      );
+
+    /* =================================
        STATE
     ================================= */
 
@@ -275,6 +314,34 @@ document.addEventListener(
           day: "2-digit",
           month: "long",
           year: "numeric"
+        }
+      ).format(date);
+    }
+
+    function formatOrderDateTime(value) {
+      if (!value) {
+        return "";
+      }
+
+      const date =
+        new Date(value);
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return "";
+      }
+
+      return new Intl.DateTimeFormat(
+        "en-IN",
+        {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
         }
       ).format(date);
     }
@@ -671,12 +738,273 @@ document.addEventListener(
       }
 
       if (
+        status.includes("packed")
+      ) {
+        return "Your order has been packed and is ready for shipping.";
+      }
+
+      if (
         status.includes("processing")
       ) {
         return "Your order is being processed.";
       }
 
       return "Your order is being prepared.";
+    }
+
+    /* =================================
+       ORDER TRACKING HELPERS
+    ================================= */
+
+    function normalizeTrackingStatus(
+      order
+    ) {
+      return getOrderStatus(order)
+        .trim()
+        .toLowerCase()
+        .replaceAll("_", " ")
+        .replaceAll("-", " ")
+        .replace(/\s+/g, " ");
+    }
+
+    function getTrackingStep(order) {
+      const status =
+        normalizeTrackingStatus(
+          order
+        );
+
+      if (
+        status.includes(
+          "delivered"
+        )
+      ) {
+        return 5;
+      }
+
+      if (
+        status.includes(
+          "out for delivery"
+        )
+      ) {
+        return 4;
+      }
+
+      if (
+        status.includes(
+          "shipped"
+        ) ||
+        status.includes(
+          "dispatched"
+        )
+      ) {
+        return 3;
+      }
+
+      if (
+        status.includes(
+          "confirmed"
+        ) ||
+        status.includes(
+          "processing"
+        ) ||
+        status.includes(
+          "packed"
+        )
+      ) {
+        return 2;
+      }
+
+      return 1;
+    }
+
+    function getTrackingStatusName(
+      order
+    ) {
+      if (isCancelled(order)) {
+        return "Cancelled";
+      }
+
+      const currentStep =
+        getTrackingStep(order);
+
+      const statusNames = {
+        1: "Order Placed",
+        2: "Order Confirmed",
+        3: "Shipped",
+        4: "Out for Delivery",
+        5: "Delivered"
+      };
+
+      return (
+        statusNames[currentStep] ||
+        "Order Placed"
+      );
+    }
+
+    function getTrackingDate(
+      order,
+      stepNumber
+    ) {
+      const dateFields = {
+        1:
+          order?.created_at,
+
+        2:
+          order?.confirmed_at ||
+          order?.processed_at ||
+          order?.packed_at,
+
+        3:
+          order?.shipped_at ||
+          order?.dispatched_at,
+
+        4:
+          order?.out_for_delivery_at,
+
+        5:
+          order?.delivered_at
+      };
+
+      return (
+        dateFields[stepNumber] ||
+        null
+      );
+    }
+
+    function renderOrderTracking(
+      order
+    ) {
+      if (
+        !orderTrackingSection ||
+        !order
+      ) {
+        return;
+      }
+
+      const cancelled =
+        isCancelled(order);
+
+      orderTrackingSection
+        .classList.toggle(
+          "is-cancelled",
+          cancelled
+        );
+
+      if (
+        orderTrackingCurrentStatus
+      ) {
+        orderTrackingCurrentStatus
+          .textContent =
+          getTrackingStatusName(
+            order
+          );
+      }
+
+      if (cancelled) {
+        if (orderTrackingTimeline) {
+          orderTrackingTimeline.hidden =
+            true;
+        }
+
+        if (
+          orderTrackingCancelled
+        ) {
+          orderTrackingCancelled.hidden =
+            false;
+        }
+
+        if (
+          orderTrackingCancelledReason
+        ) {
+          const reason =
+            order?.cancel_reason
+              ? `Reason: ${order.cancel_reason}`
+              : "This order has been cancelled.";
+
+          const cancelledDate =
+            order?.cancelled_at
+              ? ` ${formatOrderDateTime(
+                  order.cancelled_at
+                )}`
+              : "";
+
+          orderTrackingCancelledReason
+            .textContent =
+            `${reason}${cancelledDate}`;
+        }
+
+        return;
+      }
+
+      if (orderTrackingTimeline) {
+        orderTrackingTimeline.hidden =
+          false;
+      }
+
+      if (
+        orderTrackingCancelled
+      ) {
+        orderTrackingCancelled.hidden =
+          true;
+      }
+
+      const currentStep =
+        getTrackingStep(order);
+
+      orderTrackingSteps.forEach(
+        function (stepElement) {
+          const stepNumber =
+            Number(
+              stepElement.dataset
+                .trackingStep
+            );
+
+          const isCompleted =
+            stepNumber <
+            currentStep;
+
+          const isCurrent =
+            stepNumber ===
+            currentStep;
+
+          stepElement.classList.toggle(
+            "is-completed",
+            isCompleted
+          );
+
+          stepElement.classList.toggle(
+            "is-current",
+            isCurrent
+          );
+
+          const dateElement =
+            stepElement.querySelector(
+              ".order-tracking-date"
+            );
+
+          const trackingDate =
+            getTrackingDate(
+              order,
+              stepNumber
+            );
+
+          if (dateElement) {
+            dateElement.textContent =
+              trackingDate
+                ? formatOrderDateTime(
+                    trackingDate
+                  )
+                : "";
+          }
+        }
+      );
+
+      if (trackingPlacedDate) {
+        trackingPlacedDate.textContent =
+          formatOrderDateTime(
+            order.created_at
+          );
+      }
     }
 
     /* =================================
@@ -723,10 +1051,12 @@ document.addEventListener(
               searchValue
             );
 
-          let filterMatches = true;
+          let filterMatches =
+            true;
 
           if (
-            activeFilter === "UPI"
+            activeFilter ===
+            "UPI"
           ) {
             filterMatches =
               payment
@@ -811,7 +1141,8 @@ document.addEventListener(
               "button"
             );
 
-          button.type = "button";
+          button.type =
+            "button";
 
           button.className =
             "order-list-item";
@@ -935,15 +1266,19 @@ document.addEventListener(
         return;
       }
 
-      activeOrder = order;
+      activeOrder =
+        order;
 
-      selectedRating = 0;
+      selectedRating =
+        0;
 
       updateStars();
 
       renderOrders();
 
-      renderOrderDetails(order);
+      renderOrderDetails(
+        order
+      );
 
       ordersPage?.classList.add(
         "details-open"
@@ -1112,6 +1447,10 @@ document.addEventListener(
         cancelOrderMessage.textContent =
           "";
       }
+
+      renderOrderTracking(
+        order
+      );
     }
 
     /* =================================
@@ -1363,11 +1702,15 @@ document.addEventListener(
         }
 
         const orderNumber =
-          getOrderNumber(activeOrder);
+          getOrderNumber(
+            activeOrder
+          );
 
         try {
           await navigator.clipboard
-            .writeText(orderNumber);
+            .writeText(
+              orderNumber
+            );
 
           copyOrderButton.textContent =
             "✓";
@@ -1454,7 +1797,9 @@ document.addEventListener(
 
     function updateStars() {
       orderStars
-        ?.querySelectorAll("button")
+        ?.querySelectorAll(
+          "button"
+        )
         .forEach(
           function (button) {
             const rating =
@@ -1464,14 +1809,17 @@ document.addEventListener(
 
             button.classList.toggle(
               "active",
-              rating <= selectedRating
+              rating <=
+                selectedRating
             );
           }
         );
     }
 
     orderStars
-      ?.querySelectorAll("button")
+      ?.querySelectorAll(
+        "button"
+      )
       .forEach(
         function (button) {
           button.addEventListener(
@@ -1479,7 +1827,8 @@ document.addEventListener(
             function () {
               selectedRating =
                 Number(
-                  button.dataset.rating
+                  button.dataset
+                    .rating
                 );
 
               updateStars();
@@ -1513,13 +1862,16 @@ document.addEventListener(
     function openCancelModal() {
       if (
         !activeOrder ||
-        !canCancelOrder(activeOrder)
+        !canCancelOrder(
+          activeOrder
+        )
       ) {
         return;
       }
 
       if (cancelReason) {
-        cancelReason.value = "";
+        cancelReason.value =
+          "";
       }
 
       if (cancelModalMessage) {
@@ -1650,7 +2002,9 @@ document.addEventListener(
           }
 
           if (
-            !canCancelOrder(activeOrder)
+            !canCancelOrder(
+              activeOrder
+            )
           ) {
             if (cancelModalMessage) {
               cancelModalMessage.textContent =
@@ -1817,7 +2171,8 @@ document.addEventListener(
       "keydown",
       function (event) {
         if (
-          event.key === "Escape" &&
+          event.key ===
+            "Escape" &&
           cancelModal
             ?.classList.contains(
               "is-open"
