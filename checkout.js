@@ -5,6 +5,11 @@ document.addEventListener(
        ELEMENTS
     ================================= */
 
+    const checkoutPageHeading =
+      document.getElementById(
+        "checkoutPageHeading"
+      );
+
     const checkoutLoading =
       document.getElementById(
         "checkoutLoading"
@@ -55,14 +60,14 @@ document.addEventListener(
         "checkoutForm"
       );
 
-    const checkoutMessage =
-      document.getElementById(
-        "checkoutMessage"
-      );
-
     const placeOrderButton =
       document.getElementById(
         "placeOrderButton"
+      );
+
+    const checkoutMessage =
+      document.getElementById(
+        "checkoutMessage"
       );
 
     const upiMessage =
@@ -74,50 +79,6 @@ document.addEventListener(
       document.getElementById(
         "checkoutSuccessMessage"
       );
-
-    /* Address elements */
-
-    const addressFormSection =
-      document.getElementById(
-        "addressFormSection"
-      );
-
-    const savedAddressCard =
-      document.getElementById(
-        "savedAddressCard"
-      );
-
-    const saveAddressButton =
-      document.getElementById(
-        "saveAddressButton"
-      );
-
-    const editAddressButton =
-      document.getElementById(
-        "editAddressButton"
-      );
-
-    const changeAddressButton =
-      document.getElementById(
-        "changeAddressButton"
-      );
-
-    const savedCustomerName =
-      document.getElementById(
-        "savedCustomerName"
-      );
-
-    const savedCustomerPhone =
-      document.getElementById(
-        "savedCustomerPhone"
-      );
-
-    const savedAddressText =
-      document.getElementById(
-        "savedAddressText"
-      );
-
-    /* Customer fields */
 
     const customerName =
       document.getElementById(
@@ -154,15 +115,77 @@ document.addEventListener(
         "customerLandmark"
       );
 
+    const savedAddressCard =
+      document.getElementById(
+        "savedAddressCard"
+      );
+
+    const savedCustomerName =
+      document.getElementById(
+        "savedCustomerName"
+      );
+
+    const savedCustomerPhone =
+      document.getElementById(
+        "savedCustomerPhone"
+      );
+
+    const savedAddressText =
+      document.getElementById(
+        "savedAddressText"
+      );
+
+    const addressFormSection =
+      document.getElementById(
+        "addressFormSection"
+      );
+
+    const saveAddressButton =
+      document.getElementById(
+        "saveAddressButton"
+      );
+
+    const editAddressButton =
+      document.getElementById(
+        "editAddressButton"
+      );
+
+    /* =================================
+       STATE
+    ================================= */
+
+    let checkoutCart = [];
+
+    let addressIsSaved = false;
+
     const customerStorageKey =
       "ajjaramCustomerDetails";
 
-    let checkoutCart = [];
-    let selectedAddress = null;
-
     /* =================================
-       HELPERS
+       GENERAL HELPERS
     ================================= */
+
+    function escapeHTML(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function formatPrice(value) {
+      return new Intl.NumberFormat(
+        "en-IN",
+        {
+          style: "currency",
+          currency: "INR",
+          maximumFractionDigits: 0
+        }
+      ).format(
+        Number(value) || 0
+      );
+    }
 
     function showMessage(
       message,
@@ -181,67 +204,29 @@ document.addEventListener(
       );
     }
 
-    function readCheckoutCart() {
-      try {
-        const checkoutData =
-          JSON.parse(
-            localStorage.getItem(
-              "ajjaramCheckout"
-            ) || "[]"
-          );
-
-        if (
-          Array.isArray(checkoutData) &&
-          checkoutData.length > 0
-        ) {
-          return checkoutData;
-        }
-
-        const cartData =
-          JSON.parse(
-            localStorage.getItem(
-              "ajjaramCart"
-            ) || "[]"
-          );
-
-        return Array.isArray(cartData)
-          ? cartData
-          : [];
-      } catch (error) {
-        console.error(
-          "Unable to read checkout data:",
-          error
-        );
-
-        return [];
+    function setPlaceOrderLoading(
+      isLoading
+    ) {
+      if (!placeOrderButton) {
+        return;
       }
-    }
 
-    function formatPrice(value) {
-      return new Intl.NumberFormat(
-        "en-IN",
-        {
-          style: "currency",
-          currency: "INR",
-          maximumFractionDigits: 0
-        }
-      ).format(
-        Number(value || 0)
-      );
-    }
+      placeOrderButton.disabled =
+        isLoading;
 
-    function escapeHTML(value) {
-      return String(value || "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+      placeOrderButton.textContent =
+        isLoading
+          ? "Placing Order..."
+          : "Place Order";
     }
 
     function getQuantity(product) {
       const quantity =
-        Number(product.quantity || 1);
+        Number(
+          product.quantity ||
+          product.qty ||
+          1
+        );
 
       return (
         Number.isInteger(quantity) &&
@@ -252,10 +237,13 @@ document.addEventListener(
     }
 
     function getSellingPrice(product) {
-      return Number(
-        product.price ||
-        product.selling_price ||
-        0
+      return (
+        Number(
+          product.price ||
+          product.selling_price ||
+          product.final_price ||
+          0
+        ) || 0
       );
     }
 
@@ -268,6 +256,7 @@ document.addEventListener(
           product.old_price ||
           product.oldPrice ||
           product.original_price ||
+          product.mrp ||
           sellingPrice
         );
 
@@ -281,15 +270,177 @@ document.addEventListener(
         product.image_url ||
         product.imageUrl ||
         product.image ||
+        product.product_image ||
         "images/image-placeholder.png"
       );
     }
 
+    function getProductName(product) {
+      return (
+        product.name ||
+        product.product_name ||
+        product.title ||
+        "Brass Product"
+      );
+    }
+
+    function getProductId(product) {
+      return (
+        product.id ||
+        product.product_id ||
+        null
+      );
+    }
+
+    function readCheckoutCart() {
+      try {
+        const savedCheckout =
+          JSON.parse(
+            localStorage.getItem(
+              "ajjaramCheckout"
+            ) || "[]"
+          );
+
+        if (
+          Array.isArray(savedCheckout) &&
+          savedCheckout.length > 0
+        ) {
+          return savedCheckout;
+        }
+
+        const savedCart =
+          JSON.parse(
+            localStorage.getItem(
+              "ajjaramCart"
+            ) || "[]"
+          );
+
+        return Array.isArray(savedCart)
+          ? savedCart
+          : [];
+      } catch (error) {
+        console.error(
+          "Unable to read checkout data:",
+          error
+        );
+
+        return [];
+      }
+    }
+
+    function getCheckoutTotals() {
+      let originalAmount = 0;
+      let totalAmount = 0;
+
+      checkoutCart.forEach(
+        function (product) {
+          const quantity =
+            getQuantity(product);
+
+          originalAmount +=
+            getOriginalPrice(product) *
+            quantity;
+
+          totalAmount +=
+            getSellingPrice(product) *
+            quantity;
+        }
+      );
+
+      return {
+        originalAmount,
+
+        discountAmount:
+          Math.max(
+            0,
+            originalAmount -
+            totalAmount
+          ),
+
+        totalAmount
+      };
+    }
+
+    function generateOrderNumber() {
+      const timestamp =
+        Date.now()
+          .toString()
+          .slice(-10);
+
+      const randomPart =
+        Math.floor(
+          1000 +
+          Math.random() * 9000
+        );
+
+      return (
+        `AJJ${timestamp}${randomPart}`
+      );
+    }
+
     /* =================================
-       ADDRESS HELPERS
+       HEADER VISIBILITY
     ================================= */
 
-    function getAddressFromForm() {
+    function updatePageState() {
+      const successIsVisible =
+        checkoutSuccess &&
+        !checkoutSuccess.hidden;
+
+      const emptyIsVisible =
+        checkoutEmpty &&
+        !checkoutEmpty.hidden;
+
+      if (checkoutPageHeading) {
+        checkoutPageHeading.hidden =
+          successIsVisible ||
+          emptyIsVisible;
+      }
+
+      document.body.classList.toggle(
+        "checkout-success-active",
+        Boolean(successIsVisible)
+      );
+
+      document.body.classList.toggle(
+        "checkout-empty-active",
+        Boolean(emptyIsVisible)
+      );
+    }
+
+    if (checkoutSuccess) {
+      new MutationObserver(
+        updatePageState
+      ).observe(
+        checkoutSuccess,
+        {
+          attributes: true,
+          attributeFilter: [
+            "hidden"
+          ]
+        }
+      );
+    }
+
+    if (checkoutEmpty) {
+      new MutationObserver(
+        updatePageState
+      ).observe(
+        checkoutEmpty,
+        {
+          attributes: true,
+          attributeFilter: [
+            "hidden"
+          ]
+        }
+      );
+    }
+
+    /* =================================
+       CUSTOMER DETAILS
+    ================================= */
+
+    function getCustomerDetails() {
       return {
         name:
           customerName?.value.trim() ||
@@ -321,226 +472,30 @@ document.addEventListener(
       };
     }
 
-    function fillAddressForm(address) {
-      if (!address) {
-        return;
-      }
-
-      if (customerName) {
-        customerName.value =
-          address.name || "";
-      }
-
-      if (customerPhone) {
-        customerPhone.value =
-          address.phone || "";
-      }
-
-      if (customerAddress) {
-        customerAddress.value =
-          address.address || "";
-      }
-
-      if (customerCity) {
-        customerCity.value =
-          address.city || "";
-      }
-
-      if (customerState) {
-        customerState.value =
-          address.state || "";
-      }
-
-      if (customerPincode) {
-        customerPincode.value =
-          address.pincode || "";
-      }
-
-      if (customerLandmark) {
-        customerLandmark.value =
-          address.landmark || "";
-      }
-    }
-
-    function validateAddress(address) {
-      if (!address.name) {
-        showMessage(
-          "Enter your full name.",
-          true
-        );
-
-        customerName?.focus();
-
-        return false;
-      }
-
-      if (
-        !/^[6-9]\d{9}$/.test(
-          address.phone
-        )
-      ) {
-        showMessage(
-          "Enter a valid 10-digit mobile number.",
-          true
-        );
-
-        customerPhone?.focus();
-
-        return false;
-      }
-
-      if (!address.address) {
-        showMessage(
-          "Enter your complete address.",
-          true
-        );
-
-        customerAddress?.focus();
-
-        return false;
-      }
-
-      if (!address.city) {
-        showMessage(
-          "Enter your city.",
-          true
-        );
-
-        customerCity?.focus();
-
-        return false;
-      }
-
-      if (!address.state) {
-        showMessage(
-          "Enter your state.",
-          true
-        );
-
-        customerState?.focus();
-
-        return false;
-      }
-
-      if (
-        !/^\d{6}$/.test(
-          address.pincode
-        )
-      ) {
-        showMessage(
-          "Enter a valid 6-digit PIN code.",
-          true
-        );
-
-        customerPincode?.focus();
-
-        return false;
-      }
-
-      return true;
-    }
-
-    function renderSavedAddress(address) {
-      if (
-        !address ||
-        !address.name ||
-        !address.phone
-      ) {
-        selectedAddress = null;
-
-        if (savedAddressCard) {
-          savedAddressCard.hidden = true;
-        }
-
-        if (addressFormSection) {
-          addressFormSection.classList
-            .remove("is-hidden");
-        }
-
-        if (changeAddressButton) {
-          changeAddressButton.hidden =
-            true;
-        }
-
-        return;
-      }
-
-      selectedAddress = address;
-
-      if (savedCustomerName) {
-        savedCustomerName.textContent =
-          address.name;
-      }
-
-      if (savedCustomerPhone) {
-        savedCustomerPhone.textContent =
-          address.phone;
-      }
-
-      const addressParts = [
-        address.address,
-        address.landmark,
-        address.city,
-        address.state,
-        address.pincode
-      ].filter(Boolean);
-
-      if (savedAddressText) {
-        savedAddressText.textContent =
-          addressParts.join(", ");
-      }
-
-      if (savedAddressCard) {
-        savedAddressCard.hidden = false;
-      }
-
-      if (addressFormSection) {
-        addressFormSection.classList.add(
-          "is-hidden"
-        );
-      }
-
-      if (changeAddressButton) {
-        changeAddressButton.hidden =
-          false;
-      }
-    }
-
-    function saveAddress() {
-      const address =
-        getAddressFromForm();
-
-      if (!validateAddress(address)) {
-        return;
-      }
+    function saveCustomerDetails() {
+      const customerDetails =
+        getCustomerDetails();
 
       try {
         localStorage.setItem(
           customerStorageKey,
-          JSON.stringify(address)
-        );
-
-        renderSavedAddress(address);
-
-        showMessage(
-          "Address saved successfully."
+          JSON.stringify(
+            customerDetails
+          )
         );
       } catch (error) {
         console.error(
-          "Unable to save address:",
+          "Unable to save customer details:",
           error
         );
-
-        showMessage(
-          "Unable to save address.",
-          true
-        );
       }
+
+      return customerDetails;
     }
 
-    function loadSavedAddress() {
+    function loadCustomerDetails() {
       try {
-        const savedAddress =
+        const savedDetails =
           JSON.parse(
             localStorage.getItem(
               customerStorageKey
@@ -548,88 +503,241 @@ document.addEventListener(
           );
 
         if (
-          savedAddress &&
-          typeof savedAddress ===
+          !savedDetails ||
+          typeof savedDetails !==
             "object"
         ) {
-          fillAddressForm(
-            savedAddress
-          );
+          return;
+        }
 
-          renderSavedAddress(
-            savedAddress
+        if (customerName) {
+          customerName.value =
+            savedDetails.name || "";
+        }
+
+        if (customerPhone) {
+          customerPhone.value =
+            savedDetails.phone || "";
+        }
+
+        if (customerAddress) {
+          customerAddress.value =
+            savedDetails.address || "";
+        }
+
+        if (customerCity) {
+          customerCity.value =
+            savedDetails.city || "";
+        }
+
+        if (customerState) {
+          customerState.value =
+            savedDetails.state || "";
+        }
+
+        if (customerPincode) {
+          customerPincode.value =
+            savedDetails.pincode || "";
+        }
+
+        if (customerLandmark) {
+          customerLandmark.value =
+            savedDetails.landmark || "";
+        }
+
+        const requiredDetailsExist =
+          savedDetails.name &&
+          savedDetails.phone &&
+          savedDetails.address &&
+          savedDetails.city &&
+          savedDetails.state &&
+          savedDetails.pincode;
+
+        if (requiredDetailsExist) {
+          displaySavedAddress(
+            savedDetails
           );
-        } else {
-          renderSavedAddress(null);
         }
       } catch (error) {
         console.error(
-          "Unable to load saved address:",
+          "Unable to load customer details:",
           error
         );
-
-        renderSavedAddress(null);
       }
     }
 
-    function openAddressForm() {
-      if (selectedAddress) {
-        fillAddressForm(
-          selectedAddress
-        );
+    function displaySavedAddress(
+      details
+    ) {
+      addressIsSaved = true;
+
+      if (savedCustomerName) {
+        savedCustomerName.textContent =
+          details.name ||
+          "Customer";
+      }
+
+      if (savedCustomerPhone) {
+        savedCustomerPhone.textContent =
+          details.phone || "";
+      }
+
+      if (savedAddressText) {
+        savedAddressText.textContent =
+          [
+            details.address,
+            details.landmark,
+            details.city,
+            details.state,
+            details.pincode
+          ]
+            .filter(Boolean)
+            .join(", ");
       }
 
       if (savedAddressCard) {
-        savedAddressCard.hidden = true;
+        savedAddressCard.hidden =
+          false;
       }
 
-      if (addressFormSection) {
-        addressFormSection.classList
-          .remove("is-hidden");
-      }
+      addressFormSection?.classList.add(
+        "is-hidden"
+      );
+    }
 
-      if (changeAddressButton) {
-        changeAddressButton.hidden =
+    function showAddressForm() {
+      addressIsSaved = false;
+
+      if (savedAddressCard) {
+        savedAddressCard.hidden =
           true;
       }
 
-      showMessage("");
-
-      customerName?.focus();
+      addressFormSection?.classList.remove(
+        "is-hidden"
+      );
     }
+
+    const customerFields = [
+      customerName,
+      customerPhone,
+      customerAddress,
+      customerCity,
+      customerState,
+      customerPincode,
+      customerLandmark
+    ].filter(Boolean);
+
+    customerFields.forEach(
+      function (field) {
+        field.addEventListener(
+          "change",
+          function () {
+            saveCustomerDetails();
+          }
+        );
+      }
+    );
+
+    saveAddressButton?.addEventListener(
+      "click",
+      function () {
+        const details =
+          getCustomerDetails();
+
+        if (details.name.length < 2) {
+          showMessage(
+            "Enter your full name.",
+            true
+          );
+
+          customerName?.focus();
+          return;
+        }
+
+        if (
+          !/^[6-9]\d{9}$/.test(
+            details.phone
+          )
+        ) {
+          showMessage(
+            "Enter a valid 10-digit mobile number.",
+            true
+          );
+
+          customerPhone?.focus();
+          return;
+        }
+
+        if (!details.address) {
+          showMessage(
+            "Enter your delivery address.",
+            true
+          );
+
+          customerAddress?.focus();
+          return;
+        }
+
+        if (!details.city) {
+          showMessage(
+            "Enter your city.",
+            true
+          );
+
+          customerCity?.focus();
+          return;
+        }
+
+        if (!details.state) {
+          showMessage(
+            "Enter your state.",
+            true
+          );
+
+          customerState?.focus();
+          return;
+        }
+
+        if (
+          !/^\d{6}$/.test(
+            details.pincode
+          )
+        ) {
+          showMessage(
+            "Enter a valid 6-digit PIN code.",
+            true
+          );
+
+          customerPincode?.focus();
+          return;
+        }
+
+        saveCustomerDetails();
+
+        displaySavedAddress(
+          details
+        );
+
+        showMessage(
+          "Address saved successfully."
+        );
+      }
+    );
+
+    editAddressButton?.addEventListener(
+      "click",
+      showAddressForm
+    );
 
     /* =================================
-       ADDRESS EVENTS
-    ================================= */
-
-    if (saveAddressButton) {
-      saveAddressButton.addEventListener(
-        "click",
-        saveAddress
-      );
-    }
-
-    if (editAddressButton) {
-      editAddressButton.addEventListener(
-        "click",
-        openAddressForm
-      );
-    }
-
-    if (changeAddressButton) {
-      changeAddressButton.addEventListener(
-        "click",
-        openAddressForm
-      );
-    }
-
-    /* =================================
-       RENDER PRODUCTS
+       RENDER CHECKOUT
     ================================= */
 
     function renderCheckout() {
       if (checkoutLoading) {
-        checkoutLoading.hidden = true;
+        checkoutLoading.hidden =
+          true;
       }
 
       if (
@@ -637,40 +745,46 @@ document.addEventListener(
         checkoutCart.length === 0
       ) {
         if (checkoutLayout) {
-          checkoutLayout.hidden = true;
+          checkoutLayout.hidden =
+            true;
         }
 
         if (checkoutSuccess) {
-          checkoutSuccess.hidden = true;
+          checkoutSuccess.hidden =
+            true;
         }
 
         if (checkoutEmpty) {
-          checkoutEmpty.hidden = false;
+          checkoutEmpty.hidden =
+            false;
         }
 
+        updatePageState();
         return;
       }
 
       if (checkoutEmpty) {
-        checkoutEmpty.hidden = true;
+        checkoutEmpty.hidden =
+          true;
       }
 
       if (checkoutSuccess) {
-        checkoutSuccess.hidden = true;
+        checkoutSuccess.hidden =
+          true;
       }
 
       if (checkoutLayout) {
-        checkoutLayout.hidden = false;
+        checkoutLayout.hidden =
+          false;
       }
 
       if (!checkoutProducts) {
+        updatePageState();
         return;
       }
 
-      checkoutProducts.innerHTML = "";
-
-      let originalTotal = 0;
-      let sellingTotal = 0;
+      checkoutProducts.innerHTML =
+        "";
 
       checkoutCart.forEach(
         function (product) {
@@ -679,17 +793,6 @@ document.addEventListener(
 
           const sellingPrice =
             getSellingPrice(product);
-
-          const originalPrice =
-            getOriginalPrice(product);
-
-          originalTotal +=
-            originalPrice *
-            quantity;
-
-          sellingTotal +=
-            sellingPrice *
-            quantity;
 
           const productElement =
             document.createElement(
@@ -706,8 +809,7 @@ document.addEventListener(
                   getImage(product)
                 )}"
                 alt="${escapeHTML(
-                  product.name ||
-                  "Brass product"
+                  getProductName(product)
                 )}"
               >
             </div>
@@ -715,8 +817,7 @@ document.addEventListener(
             <div class="checkout-product-info">
               <h3>
                 ${escapeHTML(
-                  product.name ||
-                  "Brass Product"
+                  getProductName(product)
                 )}
               </h3>
 
@@ -738,18 +839,16 @@ document.addEventListener(
               "img"
             );
 
-          if (image) {
-            image.addEventListener(
-              "error",
-              function () {
-                image.src =
-                  "images/image-placeholder.png";
-              },
-              {
-                once: true
-              }
-            );
-          }
+          image?.addEventListener(
+            "error",
+            function () {
+              image.src =
+                "images/image-placeholder.png";
+            },
+            {
+              once: true
+            }
+          );
 
           checkoutProducts.appendChild(
             productElement
@@ -757,42 +856,44 @@ document.addEventListener(
         }
       );
 
-      const discount =
-        Math.max(
-          0,
-          originalTotal -
-          sellingTotal
-        );
+      const totals =
+        getCheckoutTotals();
 
       if (checkoutOriginalPrice) {
         checkoutOriginalPrice.textContent =
-          formatPrice(originalTotal);
+          formatPrice(
+            totals.originalAmount
+          );
       }
 
       if (checkoutDiscount) {
         checkoutDiscount.textContent =
           `− ${formatPrice(
-            discount
+            totals.discountAmount
           )}`;
       }
 
       if (checkoutTotal) {
         checkoutTotal.textContent =
-          formatPrice(sellingTotal);
+          formatPrice(
+            totals.totalAmount
+          );
       }
 
       if (checkoutSavings) {
         checkoutSavings.textContent =
-          discount > 0
+          totals.discountAmount > 0
             ? `You saved ${formatPrice(
-                discount
+                totals.discountAmount
               )} on this order`
             : "";
       }
+
+      updatePageState();
     }
 
     /* =================================
-       PAYMENT
+       PAYMENT METHOD
     ================================= */
 
     const paymentInputs =
@@ -822,213 +923,389 @@ document.addEventListener(
     );
 
     /* =================================
-       PLACE ORDER
+       PREPARE DATABASE ITEMS
     ================================= */
 
-    if (checkoutForm) {
-      checkoutForm.addEventListener(
-        "submit",
-        function (event) {
-          event.preventDefault();
+    function prepareOrderItems() {
+      return checkoutCart.map(
+        function (product) {
+          const quantity =
+            getQuantity(product);
 
-          showMessage("");
+          const price =
+            getSellingPrice(product);
 
-          if (
-            !Array.isArray(checkoutCart) ||
-            checkoutCart.length === 0
-          ) {
-            showMessage(
-              "Your checkout cart is empty.",
-              true
-            );
+          const oldPrice =
+            getOriginalPrice(product);
 
-            return;
-          }
+          return {
+            product_id:
+              getProductId(product),
 
-          let addressForOrder =
-            selectedAddress;
+            name:
+              getProductName(product),
 
-          if (!addressForOrder) {
-            addressForOrder =
-              getAddressFromForm();
+            product_name:
+              getProductName(product),
 
-            if (
-              !validateAddress(
-                addressForOrder
-              )
-            ) {
-              return;
-            }
+            image_url:
+              getImage(product),
 
-            try {
-              localStorage.setItem(
-                customerStorageKey,
-                JSON.stringify(
-                  addressForOrder
-                )
-              );
-            } catch (error) {
-              console.error(
-                "Unable to save address:",
-                error
-              );
-            }
-          }
+            image:
+              getImage(product),
 
-          const paymentMethod =
-            document.querySelector(
-              'input[name="paymentMethod"]:checked'
-            )?.value;
+            quantity,
 
-          if (
-            paymentMethod === "UPI"
-          ) {
-            showMessage(
-              "UPI payment is not connected yet. Select Cash on Delivery.",
-              true
-            );
+            price,
 
-            return;
-          }
+            old_price:
+              oldPrice,
 
-          if (placeOrderButton) {
-            placeOrderButton.disabled =
-              true;
-
-            placeOrderButton.textContent =
-              "Placing Order...";
-          }
-
-          try {
-            const orderId =
-              `AJJ${Date.now()}`;
-
-            const orderData = {
-              order_id: orderId,
-
-              customer: {
-                name:
-                  addressForOrder.name,
-
-                phone:
-                  addressForOrder.phone,
-
-                address:
-                  addressForOrder.address,
-
-                city:
-                  addressForOrder.city,
-
-                state:
-                  addressForOrder.state,
-
-                pincode:
-                  addressForOrder.pincode,
-
-                landmark:
-                  addressForOrder.landmark
-              },
-
-              products:
-                checkoutCart,
-
-              payment_method:
-                paymentMethod,
-
-              status:
-                "Order Placed",
-
-              created_at:
-                new Date()
-                  .toISOString()
-            };
-
-            let orders = [];
-
-            try {
-              const savedOrders =
-                JSON.parse(
-                  localStorage.getItem(
-                    "ajjaramOrders"
-                  ) || "[]"
-                );
-
-              orders =
-                Array.isArray(
-                  savedOrders
-                )
-                  ? savedOrders
-                  : [];
-            } catch (error) {
-              orders = [];
-            }
-
-            orders.push(orderData);
-
-            localStorage.setItem(
-              "ajjaramOrders",
-              JSON.stringify(orders)
-            );
-
-            localStorage.removeItem(
-              "ajjaramCart"
-            );
-
-            localStorage.removeItem(
-              "ajjaramCheckout"
-            );
-
-            checkoutCart = [];
-
-            if (checkoutLayout) {
-              checkoutLayout.hidden =
-                true;
-            }
-
-            if (checkoutEmpty) {
-              checkoutEmpty.hidden =
-                true;
-            }
-
-            if (checkoutSuccess) {
-              checkoutSuccess.hidden =
-                false;
-            }
-
-            if (
-              checkoutSuccessMessage
-            ) {
-              checkoutSuccessMessage
-                .textContent =
-                `Thank you, ${addressForOrder.name}. Your order ID is ${orderId}.`;
-            }
-
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth"
-            });
-          } catch (error) {
-            console.error(
-              "Unable to place order:",
-              error
-            );
-
-            showMessage(
-              "Unable to place your order. Please try again.",
-              true
-            );
-
-            if (placeOrderButton) {
-              placeOrderButton.disabled =
-                false;
-
-              placeOrderButton.textContent =
-                "Place Order";
-            }
-          }
+            line_total:
+              price * quantity
+          };
         }
       );
     }
+
+    /* =================================
+       PLACE ORDER IN SUPABASE
+    ================================= */
+
+    checkoutForm?.addEventListener(
+      "submit",
+      async function (event) {
+        event.preventDefault();
+
+        showMessage("");
+
+        if (
+          !Array.isArray(checkoutCart) ||
+          checkoutCart.length === 0
+        ) {
+          showMessage(
+            "Your checkout cart is empty.",
+            true
+          );
+
+          return;
+        }
+
+        if (
+          typeof supabaseClient ===
+          "undefined"
+        ) {
+          showMessage(
+            "Supabase is not connected. Check supabase-config.js.",
+            true
+          );
+
+          return;
+        }
+
+        const customerDetails =
+          getCustomerDetails();
+
+        if (
+          customerDetails.name.length <
+          2
+        ) {
+          showMessage(
+            "Enter your full name.",
+            true
+          );
+
+          showAddressForm();
+          customerName?.focus();
+          return;
+        }
+
+        if (
+          !/^[6-9]\d{9}$/.test(
+            customerDetails.phone
+          )
+        ) {
+          showMessage(
+            "Enter a valid 10-digit mobile number.",
+            true
+          );
+
+          showAddressForm();
+          customerPhone?.focus();
+          return;
+        }
+
+        if (
+          !customerDetails.address
+        ) {
+          showMessage(
+            "Enter your delivery address.",
+            true
+          );
+
+          showAddressForm();
+          customerAddress?.focus();
+          return;
+        }
+
+        if (!customerDetails.city) {
+          showMessage(
+            "Enter your city.",
+            true
+          );
+
+          showAddressForm();
+          customerCity?.focus();
+          return;
+        }
+
+        if (!customerDetails.state) {
+          showMessage(
+            "Enter your state.",
+            true
+          );
+
+          showAddressForm();
+          customerState?.focus();
+          return;
+        }
+
+        if (
+          !/^\d{6}$/.test(
+            customerDetails.pincode
+          )
+        ) {
+          showMessage(
+            "Enter a valid 6-digit PIN code.",
+            true
+          );
+
+          showAddressForm();
+          customerPincode?.focus();
+          return;
+        }
+
+        const paymentMethod =
+          document.querySelector(
+            'input[name="paymentMethod"]:checked'
+          )?.value ||
+          "Cash on Delivery";
+
+        if (paymentMethod === "UPI") {
+          showMessage(
+            "UPI payment is not connected yet. Select Cash on Delivery.",
+            true
+          );
+
+          return;
+        }
+
+        setPlaceOrderLoading(true);
+
+        try {
+          const {
+            data: userData,
+            error: userError
+          } =
+            await supabaseClient.auth
+              .getUser();
+
+          if (
+            userError ||
+            !userData?.user
+          ) {
+            throw new Error(
+              "Please login before placing your order."
+            );
+          }
+
+          const user =
+            userData.user;
+
+          const accountType =
+            user.user_metadata
+              ?.account_type;
+
+          if (accountType === "admin") {
+            throw new Error(
+              "Admin accounts cannot place customer orders."
+            );
+          }
+
+          saveCustomerDetails();
+
+          const totals =
+            getCheckoutTotals();
+
+          const orderNumber =
+            generateOrderNumber();
+
+          const shippingAddress = {
+            name:
+              customerDetails.name,
+
+            phone:
+              customerDetails.phone,
+
+            address:
+              customerDetails.address,
+
+            city:
+              customerDetails.city,
+
+            state:
+              customerDetails.state,
+
+            pincode:
+              customerDetails.pincode,
+
+            landmark:
+              customerDetails.landmark
+          };
+
+          const orderItems =
+            prepareOrderItems();
+
+          const orderData = {
+            user_id:
+              user.id,
+
+            order_number:
+              orderNumber,
+
+            customer_name:
+              customerDetails.name,
+
+            customer_phone:
+              customerDetails.phone,
+
+            shipping_address:
+              shippingAddress,
+
+            items:
+              orderItems,
+
+            payment_method:
+              paymentMethod,
+
+            original_amount:
+              totals.originalAmount,
+
+            discount_amount:
+              totals.discountAmount,
+
+            total_amount:
+              totals.totalAmount,
+
+            status:
+              "Order Placed"
+          };
+
+          console.log(
+            "Saving order to Supabase:",
+            orderData
+          );
+
+          const {
+            data: insertedOrder,
+            error: orderError
+          } =
+            await supabaseClient
+              .from("orders")
+              .insert(orderData)
+              .select()
+              .single();
+
+          if (orderError) {
+            throw orderError;
+          }
+
+          console.log(
+            "Order saved successfully:",
+            insertedOrder
+          );
+
+          localStorage.removeItem(
+            "ajjaramCart"
+          );
+
+          localStorage.removeItem(
+            "ajjaramCheckout"
+          );
+
+          checkoutCart = [];
+
+          if (checkoutLayout) {
+            checkoutLayout.hidden =
+              true;
+          }
+
+          if (checkoutEmpty) {
+            checkoutEmpty.hidden =
+              true;
+          }
+
+          if (checkoutSuccess) {
+            checkoutSuccess.hidden =
+              false;
+          }
+
+          if (checkoutSuccessMessage) {
+            checkoutSuccessMessage.textContent =
+              `Thank you, ${customerDetails.name}. Your order ID is ${orderNumber}.`;
+          }
+
+          updatePageState();
+
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+        } catch (error) {
+          console.error(
+            "Unable to place order:",
+            error
+          );
+
+          const message =
+            String(
+              error?.message ||
+              "Unable to place your order."
+            );
+
+          if (
+            message
+              .toLowerCase()
+              .includes(
+                "row-level security"
+              )
+          ) {
+            showMessage(
+              "Order permission was blocked by Supabase. Run the orders RLS policies provided above.",
+              true
+            );
+          } else if (
+            message
+              .toLowerCase()
+              .includes(
+                "column"
+              )
+          ) {
+            showMessage(
+              `Orders table error: ${message}`,
+              true
+            );
+          } else {
+            showMessage(
+              message,
+              true
+            );
+          }
+        } finally {
+          setPlaceOrderLoading(false);
+        }
+      }
+    );
 
     /* =================================
        START
@@ -1037,8 +1314,10 @@ document.addEventListener(
     checkoutCart =
       readCheckoutCart();
 
-    loadSavedAddress();
+    loadCustomerDetails();
 
     renderCheckout();
+
+    updatePageState();
   }
 );
