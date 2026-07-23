@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>My Orders | Ajjaram Brass</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="orders.css">
+</head>
+
+<body>
+<!-- Orders page shimmer loader -->
+
+<div
+  class="page-shimmer-loader"
+  id="pageShimmerLoader"
+  aria-hidden="true"
+>
+  <div class="orders-shimmer-layout">
+
+    <!-- Left panel -->
+
+    <section class="orders-shimmer-panel">
+
+      <div class="orders-shimmer-header">
+
+        <div class="shimmer-circle"></div>
+
+        <div class="shimmer-header-text">
+          <div class="shimmer-title"></div>
+          <div class="shimmer-subtitle"></div>
+        </div>
+
+      </div>
+
+      <div class="shimmer-care-card">
+
+        <div>
+          <div class="shimmer-care-title"></div>
+          <div class="shimmer-care-text"></div>
+        </div>
+
+        <div class="shimmer-care-icon"></div>
+
+      </div>
+
+      <div class="shimmer-controls">
+        <div class="shimmer-search"></div>
+        <div class="shimmer-filter"></div>
+      </div>
+
+      <div class="shimmer-filter-row">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+
+      <div class="shimmer-order-list">
+
+        <article class="shimmer-order-item">
+          <div class="shimmer-order-image"></div>
+
+          <div class="shimmer-order-info">
+            <div class="shimmer-order-status"></div>
+            <div class="shimmer-order-name"></div>
+            <div class="shimmer-order-text"></div>
+            <div class="shimmer-order-price"></div>
+          </div>
+        </article>
+
+        <article class="shimmer-order-item">
+          <div class="shimmer-order-image"></div>
+
+          <div class="shimmer-order-info">
+            <div class="shimmer-order-status"></div>
+            <div class="shimmer-order-name"></div>
+            <div class="shimmer-order-text"></div>
+            <div class="shimmer-order-price"></div>
+          </div>
+        </article>
+
+        <article class="shimmer-order-item">
+          <div class="shimmer-order-image"></div>
+
+          <div class="shimmer-order-info">
+            <div class="shimmer-order-status"></div>
+            <div class="shimmer-order-name"></div>
+            <div class="shimmer-order-text"></div>
+            <div class="shimmer-order-price"></div>
+          </div>
+        </article>
+
+        <article class="shimmer-order-item">
+          <div class="shimmer-order-image"></div>
+
+          <div class="shimmer-order-info">
+            <div class="shimmer-order-status"></div>
+            <div class="shimmer-order-name"></div>
+            <div class="shimmer-order-text"></div>
+            <div class="shimmer-order-price"></div>
+          </div>
+        </article>
+
+      </div>
+
+    </section>
+
+    <!-- Right panel -->
+
+    <section class="orders-shimmer-panel orders-shimmer-details">
+
+      <div class="orders-shimmer-header">
+
+        <div class="shimmer-circle"></div>
+
+        <div class="shimmer-header-text">
+          <div class="shimmer-title"></div>
+          <div class="shimmer-subtitle"></div>
+        </div>
+
+      </div>
+
+      <div class="shimmer-details-content">
+
+        <div class="shimmer-detail-card shimmer-summary-card">
+
+          <div class="shimmer-summary-image"></div>
+
+          <div class="shimmer-summary-info">
+            <div class="shimmer-summary-name"></div>
+            <div class="shimmer-summary-text"></div>
+            <div class="shimmer-summary-price"></div>
+          </div>
+
+        </div>
+
+        <div class="shimmer-order-id"></div>
+
+        <div class="shimmer-detail-card">
+          <div class="shimmer-detail-title"></div>
+          <div class="shimmer-detail-line"></div>
+          <div class="shimmer-detail-text long"></div>
+          <div class="shimmer-detail-text medium"></div>
+        </div>
+
+        <div class="shimmer-detail-card">
+          <div class="shimmer-detail-title"></div>
+          <div class="shimmer-detail-text long"></div>
+          <div class="shimmer-detail-text long"></div>
+          <div class="shimmer-detail-text short"></div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+</div>
+
+  <main class="orders-page">
+
+    <!-- =================================
+         ORDERS LIST
+    ================================= -->
+
+    <section
+      class="orders-list-panel"
+      id="ordersListPanel"
+    >
+
+      <header class="orders-page-header">
+
+        <button
+          class="orders-back-button"
+          type="button"
+          aria-label="Back to products"
+          onclick="window.location.href='products.html'"
+        >
+          ←
+        </button>
+
+        <div class="orders-header-title">
+          <h1>My Orders</h1>
+
+          <p>
+            Track and manage your purchases.
+          </p>
+        </div>
+
+      </header>
+
+      <!-- Care card -->
+
+      <section class="orders-care-card">
+
+        <div>
+          <h2>Premium Brass Care</h2>
+
+          <p>
+            Track your orders easily.
+          </p>
+        </div>
+
+        <div class="orders-care-icon">
+          🚚
+        </div>
+
+      </section>
+
+      <!-- Search and filters -->
+
+      <section class="orders-controls">
+
+        <div class="orders-search-row">
+
+          <label class="orders-search-box">
+
+            <svg viewBox="0 0 24 24">
+              <circle
+                cx="11"
+                cy="11"
+                r="7"
+              ></circle>
+
+              <path
+                d="M20 20L16.5 16.5"
+              ></path>
+            </svg>
+
+            <input
+              type="search"
+              id="ordersSearchInput"
+              placeholder="Search your order..."
+              autocomplete="off"
+            >
+
+          </label>
+
+          <button
+            class="orders-filter-button"
+            id="ordersFilterButton"
+            type="button"
+          >
+            ☷ Filters
+          </button>
+
+        </div>
+
+        <div
+          class="orders-filter-options"
+          id="ordersFilterOptions"
+        >
+
+          <button
+            class="order-filter active"
+            type="button"
+            data-status="all"
+          >
+            All
+          </button>
+
+          <button
+            class="order-filter"
+            type="button"
+            data-status="UPI"
+          >
+            UPI
+          </button>
+
+          <button
+            class="order-filter"
+            type="button"
+            data-status="Cash on Delivery"
+          >
+            COD
+          </button>
+
+          <button
+            class="order-filter"
+            type="button"
+            data-status="Delivered"
+          >
+            Delivered
+          </button>
+
+          <button
+            class="order-filter"
+            type="button"
+            data-status="Cancelled"
+          >
+            Cancelled
+          </button>
+
+        </div>
+
+      </section>
+
+      <!-- Loading -->
+
+      <div
+        class="orders-loading"
+        id="ordersLoading"
+      >
+        Loading your orders...
+      </div>
+
+      <!-- Message -->
+
+      <p
+        class="orders-message"
+        id="ordersMessage"
+        aria-live="polite"
+      ></p>
+
+      <!-- Orders -->
+
+      <div
+        class="orders-list"
+        id="ordersList"
+      ></div>
+
+      <!-- Empty orders -->
+
+      <section
+        class="orders-empty"
+        id="ordersEmpty"
+        hidden
+      >
+
+        <div class="orders-empty-icon">
+          📦
+        </div>
+
+        <h2>No orders found</h2>
+
+        <p>
+          Your placed orders will appear here.
+        </p>
+
+        <button
+          type="button"
+          onclick="window.location.href='products.html'"
+        >
+          Continue Shopping
+        </button>
+
+      </section>
+
+    </section>
+
+    <!-- =================================
+         ORDER DETAILS
+    ================================= -->
+
+    <section
+      class="order-details-panel"
+      id="orderDetailsPanel"
+    >
+
+      <header class="order-details-header">
+
+        <button
+          class="order-details-back"
+          id="orderDetailsBack"
+          type="button"
+          aria-label="Back to orders"
+        >
+          ←
+        </button>
+
+        <div>
+          <h2>Order Details</h2>
+
+          <p id="detailsOrderNumber">
+            Select an order
+          </p>
+        </div>
+
+      </header>
+
+      <!-- No selection -->
+
+      <section
+        class="order-not-selected"
+        id="orderNotSelected"
+      >
+
+        <div class="order-not-selected-icon">
+          🧾
+        </div>
+
+        <h2>Select an order</h2>
+
+        <p>
+          Choose an order to view its details.
+        </p>
+
+      </section>
+
+      <!-- Selected details -->
+
+      <div
+        class="order-details-content"
+        id="orderDetailsContent"
+        hidden
+      >
+
+        <!-- Product summary -->
+
+        <section class="order-detail-card order-product-summary">
+
+          <div
+            class="order-detail-product-image"
+            id="detailsProductImage"
+          >
+            <img
+              src="images/image-placeholder.png"
+              alt=""
+              id="detailsProductImageElement"
+            >
+          </div>
+
+          <div class="order-detail-product-info">
+
+            <h3 id="detailsProductName">
+              Product
+            </h3>
+
+            <p id="detailsProductQuantity">
+              Quantity: 1
+            </p>
+
+            <strong id="detailsOrderAmount">
+              ₹0
+            </strong>
+
+          </div>
+
+          <span
+            class="order-item-count"
+            id="detailsItemCount"
+          >
+            1 item
+          </span>
+
+        </section>
+
+        <!-- Order number -->
+
+        <div class="order-number-row">
+
+          <span>
+            Order ID
+          </span>
+
+          <strong id="detailsOrderId">
+            ------
+          </strong>
+
+          <button
+            class="copy-order-button"
+            id="copyOrderButton"
+            type="button"
+            aria-label="Copy order ID"
+          >
+            ⧉
+          </button>
+
+        </div>
+
+        <!-- Status -->
+
+        <section class="order-detail-card order-status-card">
+
+          <div class="order-status-heading">
+
+            <div>
+
+              <h3 id="detailsStatusTitle">
+                Order Placed
+              </h3>
+
+              <p id="detailsStatusDate">
+                Date not available
+              </p>
+
+            </div>
+
+            <div
+              class="order-status-icon"
+              id="detailsStatusIcon"
+            >
+              ✓
+            </div>
+
+          </div>
+
+          <div class="order-status-line"></div>
+
+          <p
+            class="order-status-note"
+            id="detailsStatusNote"
+          >
+            Your order is being prepared.
+          </p>
+
+        </section>
+
+        <!-- Delivery address -->
+
+        <section class="order-detail-card">
+
+          <h2 class="order-card-title">
+            Delivery Address
+          </h2>
+
+          <p
+            class="order-address-text"
+            id="detailsAddress"
+          >
+            Address not available
+          </p>
+
+          <p class="order-address-phone">
+            Phone:
+            <strong id="detailsPhone">
+              Not available
+            </strong>
+          </p>
+
+        </section>
+
+        <!-- Payment and total -->
+
+        <section class="order-detail-card">
+
+          <h2 class="order-card-title">
+            Payment Details
+          </h2>
+
+          <div class="order-payment-row">
+            <span>Payment Method</span>
+
+            <strong id="detailsPaymentMethod">
+              Cash on Delivery
+            </strong>
+          </div>
+
+          <div class="order-payment-row">
+            <span>Total Amount</span>
+
+            <strong id="detailsTotalAmount">
+              ₹0
+            </strong>
+          </div>
+
+        </section>
+
+        <!-- Promise -->
+
+        <section class="order-promise-section">
+
+          <h2>Ajjaram's Promise</h2>
+
+          <div class="order-promise-card">
+
+            <div class="order-promise-icon">
+              🛡️
+            </div>
+
+            <div>
+              <strong>
+                Secure brass product delivery
+              </strong>
+
+              <p>
+                Carefully packed and delivered safely.
+              </p>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- Rating -->
+
+        <section
+          class="order-review-section"
+          id="orderReviewSection"
+        >
+
+          <h2>Rate your experience</h2>
+
+          <div class="order-review-card">
+
+            <p>
+              Write a product review
+            </p>
+
+            <div
+              class="order-stars"
+              id="orderStars"
+            >
+
+              <button
+                type="button"
+                data-rating="1"
+                aria-label="1 star"
+              >
+                ★
+              </button>
+
+              <button
+                type="button"
+                data-rating="2"
+                aria-label="2 stars"
+              >
+                ★
+              </button>
+
+              <button
+                type="button"
+                data-rating="3"
+                aria-label="3 stars"
+              >
+                ★
+              </button>
+
+              <button
+                type="button"
+                data-rating="4"
+                aria-label="4 stars"
+              >
+                ★
+              </button>
+
+              <button
+                type="button"
+                data-rating="5"
+                aria-label="5 stars"
+              >
+                ★
+              </button>
+
+            </div>
+
+            <button
+              class="write-review-button"
+              id="writeReviewButton"
+              type="button"
+            >
+              ✎ Write review
+            </button>
+
+          </div>
+
+        </section>
+
+        <!-- Cancellation -->
+
+        <section
+          class="order-cancel-section"
+          id="orderCancelSection"
+        >
+
+          <h2>Order Management</h2>
+
+          <p>
+            Cancellation is available before the order is shipped.
+          </p>
+
+          <button
+            class="cancel-order-button"
+            id="cancelOrderButton"
+            type="button"
+          >
+            Cancel Order
+          </button>
+
+          <p
+            class="cancel-order-message"
+            id="cancelOrderMessage"
+            aria-live="polite"
+          ></p>
+
+        </section>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- =================================
+       CANCEL ORDER MODAL
+  ================================= -->
+
+  <div
+    class="cancel-modal-overlay"
+    id="cancelModalOverlay"
+    hidden
+  ></div>
+
+  <section
+    class="cancel-modal"
+    id="cancelModal"
+    aria-hidden="true"
+  >
+
+    <div class="cancel-modal-header">
+
+      <div>
+        <p>Order Cancellation</p>
+
+        <h2>Cancel this order?</h2>
+      </div>
+
+      <button
+        class="cancel-modal-close"
+        id="cancelModalClose"
+        type="button"
+        aria-label="Close"
+      >
+        &times;
+      </button>
+
+    </div>
+
+    <p class="cancel-modal-description">
+      Select a reason for cancelling this order.
+    </p>
+
+    <label class="cancel-reason-field">
+
+      <span>Cancellation Reason</span>
+
+      <select id="cancelReason">
+
+        <option value="">
+          Select a reason
+        </option>
+
+        <option value="Changed my mind">
+          Changed my mind
+        </option>
+
+        <option value="Ordered by mistake">
+          Ordered by mistake
+        </option>
+
+        <option value="Want to change product">
+          Want to change product
+        </option>
+
+        <option value="Delivery is taking too long">
+          Delivery is taking too long
+        </option>
+
+        <option value="Found a better price">
+          Found a better price
+        </option>
+
+        <option value="Other">
+          Other
+        </option>
+
+      </select>
+
+    </label>
+
+    <p
+      class="cancel-modal-message"
+      id="cancelModalMessage"
+      aria-live="polite"
+    ></p>
+
+    <div class="cancel-modal-actions">
+
+      <button
+        class="keep-order-button"
+        id="keepOrderButton"
+        type="button"
+      >
+        Keep Order
+      </button>
+
+      <button
+        class="confirm-cancel-button"
+        id="confirmCancelButton"
+        type="button"
+      >
+        Confirm Cancellation
+      </button>
+
+    </div>
+
+  </section>
+
+  <script src="page-loader.js"></script>
+
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+  <script src="supabase-config.js"></script>
+
+  <script src="orders.js"></script>
+
+</body>
+</html>
