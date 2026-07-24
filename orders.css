@@ -891,7 +891,8 @@ border: 1px solid #c2e9ea;
 
   background: #ffffff;
 
-  border: 1px solid #ead9c2;
+  border: 1px solid #c2e9ea;
+
   border-radius: 14px;
 
   box-shadow:
@@ -952,7 +953,7 @@ border: 1px solid #c2e9ea;
 
   background: #fffafa;
 
-  border: 1px solid #efc4c0;
+  border: 1px solid #c2e9ea;
   border-radius: 15px;
 }
 
@@ -1039,7 +1040,7 @@ body.cancel-modal-open {
 
   background: #ffffff;
 
-  border: 1px solid #e4d5c0;
+  border: 1px solid #c2e9ea;
   border-radius: 17px;
 
   box-shadow:
@@ -1977,7 +1978,7 @@ body.page-is-loading {
 
   background: #ffffff;
 
-  border: 1px solid #ead9c2;
+  border: 1px solid #c2e9ea;
   border-radius: 15px;
 
   box-shadow:
