@@ -16,13 +16,16 @@
 
 <body>
 
-  <!-- Page loader -->
+  <!-- =================================
+       PAGE LOADER
+  ================================= -->
 
   <div
     class="product-page-loader"
     id="productPageLoader"
     aria-hidden="true"
   >
+
     <div class="product-page-loader-content">
 
       <div class="product-loader-image"></div>
@@ -30,25 +33,40 @@
       <div class="product-loader-info">
 
         <div class="product-loader-small"></div>
+
         <div class="product-loader-title"></div>
+
         <div class="product-loader-text"></div>
+
         <div class="product-loader-text short"></div>
+
         <div class="product-loader-price"></div>
 
         <div class="product-loader-benefits">
+
           <div></div>
+
           <div></div>
+
           <div></div>
+
         </div>
 
       </div>
 
     </div>
+
   </div>
+
+  <!-- =================================
+       PRODUCT DETAILS PAGE
+  ================================= -->
 
   <main class="product-details-page">
 
-    <!-- LEFT: IMAGE SLIDER -->
+    <!-- =================================
+         LEFT: PRODUCT IMAGE SLIDER
+    ================================= -->
 
     <section
       class="product-large-image product-slider"
@@ -71,30 +89,36 @@
       >
 
         <div class="product-slide">
+
           <img
             class="product-slide-image"
             src=""
             alt=""
             draggable="false"
           >
+
         </div>
 
         <div class="product-slide">
+
           <img
             class="product-slide-image"
             src=""
             alt=""
             draggable="false"
           >
+
         </div>
 
         <div class="product-slide">
+
           <img
             class="product-slide-image"
             src=""
             alt=""
             draggable="false"
           >
+
         </div>
 
       </div>
@@ -126,13 +150,19 @@
 
     </section>
 
-    <!-- RIGHT COLUMN -->
+    <!-- =================================
+         RIGHT COLUMN
+    ================================= -->
 
     <div class="product-right-column">
 
-      <!-- PRODUCT INFORMATION CARD -->
+      <!-- =================================
+           PRODUCT INFORMATION CARD
+      ================================= -->
 
       <section class="product-main-info">
+
+        <!-- Product title and rating -->
 
         <div class="product-title-row">
 
@@ -148,16 +178,23 @@
           </div>
 
           <span class="product-rating">
+
             ★
+
             <span id="productRating"></span>
+
           </span>
 
         </div>
+
+        <!-- Short description -->
 
         <p
           class="product-short-description"
           id="productShortDescription"
         ></p>
+
+        <!-- Product price -->
 
         <div class="product-price-row">
 
@@ -178,11 +215,71 @@
 
         </div>
 
+        <!-- Delivery message -->
+
         <p class="product-delivery">
           🚚 Delivery in 5–7 days
         </p>
 
-        <!-- PRODUCT DETAILS INSIDE TOP CARD -->
+        <!-- =================================
+             BENEFITS ABOVE PRODUCT DETAILS
+        ================================= -->
+
+        <div class="product-benefits">
+
+          <!-- Verified quality -->
+
+          <div class="benefit-card">
+
+            <img
+              class="benefit-icon-image"
+              src="images/icons8-guarantee-50.png"
+              alt="Verified quality"
+            >
+
+            <span>
+              Verified Quality
+            </span>
+
+          </div>
+
+          <!-- Free delivery -->
+
+          <div class="benefit-card">
+
+            <img
+              class="benefit-icon-image"
+              src="images/icons8-fast-delivery-64.png"
+              alt="Free delivery"
+            >
+
+            <span>
+              Free Delivery
+            </span>
+
+          </div>
+
+          <!-- Easy returns -->
+
+          <div class="benefit-card">
+
+            <img
+              class="benefit-icon-image"
+              src="images/icons8-easy-50.png"
+              alt="Easy returns"
+            >
+
+            <span>
+              Easy Returns
+            </span>
+
+          </div>
+
+        </div>
+
+        <!-- =================================
+             PRODUCT DETAILS
+        ================================= -->
 
         <div class="product-details-inline">
 
@@ -197,51 +294,19 @@
 
         </div>
 
-        <!-- BENEFITS -->
-
-        <div class="product-benefits">
-
-          <div class="benefit-card">
-  <img
-    class="benefit-icon-image"
-    src="images/icons8-guarantee-50.png"
-    alt="Verified"
-  >
-
-  <span>Verified Quality</span>
-</div>
-
- <div class="benefit-card">
-  <img
-    class="benefit-icon-image"
-    src="images/icons8-fast-delivery-64.png"
-    alt="Delivery"
-  >
-
-  <span>Fast Delivery</span>
-</div>
-
-        <div class="benefit-card">
-  <img
-    class="benefit-icon-image"
-    src="images/icons8-easy-50.png"
-    alt="Returns"
-  >
-
-  <span>Easy Returns</span>
-</div>
-
-        </div>
-
       </section>
 
-      <!-- CART CONTROLS -->
+      <!-- =================================
+           CART CONTROLS
+      ================================= -->
 
       <section class="product-lower-section">
 
         <div class="product-cart-bar">
 
           <div class="product-purchase-row">
+
+            <!-- Add to cart -->
 
             <button
               class="product-add-to-cart"
@@ -250,6 +315,8 @@
             >
               Add to Cart
             </button>
+
+            <!-- Quantity control -->
 
             <div
               class="product-quantity-control"
@@ -284,6 +351,8 @@
 
             </div>
 
+            <!-- Cart icon -->
+
             <button
               class="product-cart-icon"
               id="productCartIcon"
@@ -297,6 +366,7 @@
                 viewBox="0 0 24 24"
                 aria-hidden="true"
               >
+
                 <circle
                   cx="9"
                   cy="20"
@@ -312,6 +382,7 @@
                 <path
                   d="M3 4H5L7.2 15H18.5L21 8H6"
                 ></path>
+
               </svg>
 
               <span
@@ -332,6 +403,10 @@
     </div>
 
   </main>
+
+  <!-- =================================
+       SCRIPTS
+  ================================= -->
 
   <script src="page-loader.js"></script>
 
