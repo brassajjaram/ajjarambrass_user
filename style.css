@@ -2190,3 +2190,13 @@ body.profile-sheet-open {
     font-family: emoji;
   }
 }
+/* =================================
+   FINAL PRODUCT IMAGE BACKGROUND
+================================= */
+
+.product-image,
+.product-image.image-loading,
+.product-image.image-loaded {
+  background: #ffffff !important;
+  background-color: #e8f7f8 !important;
+}
